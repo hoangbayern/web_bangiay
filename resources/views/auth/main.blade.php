@@ -54,6 +54,10 @@
         @error('success')
         toastr.success('{{ $message }}');
         @enderror
+
+        @error('error')
+        toastr.error('{{ $message }}');
+        @enderror
     });
 </script>
 </body>
