@@ -1,4 +1,8 @@
 <?php
+foreach (File::allFiles(__DIR__ ) as $route_file) {
+    (basename($route_file =='web.php')) ? : (require_once $route_file);
+}
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/admin', function () {
+    return view('admin-home');
+})->name('welcome')->middleware('auth:admin');
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('');
+})->name('');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

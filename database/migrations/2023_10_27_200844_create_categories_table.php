@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->text('description');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

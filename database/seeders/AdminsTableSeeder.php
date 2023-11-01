@@ -18,7 +18,7 @@ class AdminsTableSeeder extends Seeder
         Admin::find(1)->update([
             'name' => 'Admin',
             'email' => 'admin@shoesstore.com',
-            'password' => 'secret',
+            'password' => bcrypt('secret'),
         ]);
     }
 }
