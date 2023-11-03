@@ -42,7 +42,7 @@ class AdminLoginController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::guard('admin')->attempt($credentials, $remember)) {
-            return redirect()->route('welcome')->withErrors([
+            return redirect()->route('adminHome')->withErrors([
                 'success' => 'Logged in successfully',
             ]);
         }

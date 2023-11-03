@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', function () {
     return view('admin-home');
-})->name('welcome')->middleware('auth:admin');
+})->name('adminHome')->middleware('auth:admin');
 Route::get('/', function () {
     return view('');
 })->name('');
