@@ -14,8 +14,12 @@ class Product extends Model
         'description',
         'gender',
         'price',
-        'image',
+        'compare_price',
         'category_id',
+        'is_featured',
+        'qty',
+        'track_qty',
+        'status',
     ];
 
     public function category()
@@ -28,10 +32,22 @@ class Product extends Model
         return $this->belongsToMany(Color::class)->withTimestamps();
     }
 
+    public function syncColors($colorIds): array
+    {
+        return $this->colors()->sync($colorIds);
+    }
+
+
     public function sizes()
     {
         return $this->belongsToMany(Size::class)->withTimestamps();
     }
+
+    public function syncSizes($sizeIds): array
+    {
+        return $this->sizes()->sync($sizeIds);
+    }
+
 
     public function comments()
     {

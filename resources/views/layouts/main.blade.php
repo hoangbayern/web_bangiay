@@ -109,6 +109,8 @@
         $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
         //Money Euro
         $('[data-mask]').inputmask()
+        // Summernote
+        $('#summernote').summernote()
     });
     @error('warning')
     toastr.warning('{{ $message }}');
