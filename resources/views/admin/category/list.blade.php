@@ -28,7 +28,7 @@
                         <div class="card card-outline">
                             <div class="card-header">
                                 <div class="card-tools float-left">
-                                    <form id="form-search" action="#" method="GET"
+                                    <form id="form-search" action="{{route('category.search')}}" method="GET"
                                           class="input-group input-group-sm" style="width: 150%;">
                                         @csrf
                                         @method('GET')
@@ -54,59 +54,9 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body table-responsive p-0">
-                                <table class="table table-hover text-nowrap">
-                                    <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @if($categories->isNotEmpty())
-                                        @foreach($categories as $category)
-                                            <tr>
-                                                <td>
-                                                    {{ $category->id }}
-                                                </td>
-                                                <td>
-                                                    {{ $category->name }}
-                                                </td>
-                                                <td>
-                                                    {{ $category->description }}
-                                                </td>
-                                                <td>
-                                                    Test
-                                                </td>
-                                                <td>
-                                                    <a href="#"
-                                                       class="btn btn-sm btn-secondary btn-open-modal" data-toggle="modal"
-                                                       data-target="#modal-update">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
+                                <div id="table-data">
 
-                                                    <a href="#"
-                                                       class="btn btn-sm btn-danger btn-delete">
-                                                        <i class="fas fa-trash"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="6" class="text-center">
-                                                <span style="color: red">No data found.</span>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    </tbody>
-                                </table>
-                                <div class="mt-3 mr-2 float-right">
-                                    {{ $categories->links() }}
                                 </div>
-
                             </div>
                             <!-- /.card-body -->
                         </div>

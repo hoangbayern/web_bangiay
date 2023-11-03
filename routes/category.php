@@ -7,13 +7,15 @@ Route::prefix('admin/categories')->controller(CategoryController::class)->as('ca
         ->middleware('auth:admin');
     Route::post('/create','store')->name('store')
         ->middleware('auth:admin');
-//    Route::post('/update/{id}','update')->name('update')
-//        ->middleware('auth')
-//        ->middleware('permission:category.update');
-//    Route::get('/edit/{id}','edit')->name('edit')
-//        ->middleware('auth')
-//        ->middleware('permission:category.update');
+    Route::get('/edit/{id}','showFormEdit')->name('showFormEdit')
+        ->middleware('auth:admin');
+    Route::post('/update/{id}','update')->name('update')
+        ->middleware('auth:admin');
+    Route::delete('/{id}', 'deleteCategory')->name('delete')
+        ->middleware('auth:admin');
     Route::get('/list','listCategory')->name('list')
+        ->middleware('auth:admin');
+    Route::get('/search', 'search')->name('search')
         ->middleware('auth:admin');
 });
 

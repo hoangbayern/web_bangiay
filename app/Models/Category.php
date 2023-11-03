@@ -24,4 +24,16 @@ class Category extends Model
     {
         return ucfirst($value);
     }
+
+    public function scopeOrWithName($query, $name)
+    {
+        return $name ? $query->orWhere('name', 'LIKE', "%$name%") : $query;
+    }
+
+    public function search($name)
+    {
+        return Category::orWithName($name)
+            ->latest('id')->paginate(10)
+            ->withQueryString();
+    }
 }
