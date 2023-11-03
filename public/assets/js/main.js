@@ -59,7 +59,7 @@ export const main = (function () {
 
   module.getLists = async function (url, method = "GET", data = "") {
     await this.sendAjax(url, method, data).then((response) => {
-      $("#table-data").html(response.html);
+      $("#table-data").html(response.table);
     });
   };
 

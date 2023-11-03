@@ -8,10 +8,10 @@ $(document).on("input", ".is-invalid", function () {
     $(this).removeClass("is-invalid");
 });
 
-// $(document).on("click", ".pagination a", function (event) {
-//   event.preventDefault();
-//   main.lists($(this).attr("href")).catch();
-// });
+$(document).on("click", ".pagination a", function (event) {
+  event.preventDefault();
+  main.lists($(this).attr("href")).catch();
+});
 
 $(document).on("keyup", ".name", main.debounce(function () {
   main.lists().catch();
