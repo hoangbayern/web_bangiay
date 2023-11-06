@@ -66,18 +66,13 @@
                     @endif
                 </td>
                 <td>
-                    <a href="#"
-                       class="btn btn-sm btn-info btn-open-modal" data-toggle="modal">
-                        <i class="fas fa-eye"></i>
-                    </a>
 
-                    <a href="#"
-                       class="btn btn-sm btn-secondary btn-open-modal"
-                       data-toggle="modal">
+                    <a href="{{route('product.edit', $product->id)}}"
+                       class="btn btn-sm btn-secondary">
                         <i class="fas fa-edit"></i>
                     </a>
 
-                    <a href="#"
+                    <a href="{{route('product.delete', $product->id)}}"
                        class="btn btn-sm btn-danger btn-delete">
                         <i class="fas fa-trash"></i>
                     </a>

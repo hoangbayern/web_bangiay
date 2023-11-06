@@ -186,3 +186,42 @@
         <!-- /.content -->
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        Dropzone.autoDiscover = false;
+        const dropzone = $("#image").dropzone({
+            uploadprogress: function(file, progress, bytesSent) {
+                $("button[type=submit]").prop('disabled',true);
+            },
+            url:  "{{ route('temp-images.create') }}",
+            maxFiles: 10,
+            paramName: 'image',
+            addRemoveLinks: true,
+            acceptedFiles: "image/jpeg,image/png,image/gif",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, success: function(file, response){
+                console.log(response);
+                var html = `<div class="col-md-3 mb-3" id="product-image-row-${response.image_id}">
+                            <div class="card image-card">
+                               <input type="hidden" name="image_array[]" value="${response.image_id}"/>
+                                <img src="${response.imagePath}" alt="" class="w-100 card-img-top">
+                                <div class="card-body">
+                                    <a href="javascript:void(0)" onclick="deleteImage(${response.image_id});" class="btn btn-danger">Delete</a>
+
+                                </div>
+                            </div>
+                        </div>`;
+                $("#image-wrapper").append(html);
+                $("button[type=submit]").prop('disabled',false);
+                this.removeFile(file);
+            }
+        });
+        function deleteImage(id){
+            if (confirm("Are you sure you want to delete?")) {
+                $("#product-image-row-"+id).remove();
+            }
+        }
+    </script>
+@endpush

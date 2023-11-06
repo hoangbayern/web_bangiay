@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\StoreRequest;
+use App\Http\Requests\Product\UpdateRequest;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
@@ -11,6 +12,7 @@ use App\Models\Size;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
@@ -99,6 +101,71 @@ class ProductController extends Controller
         return response()->json([
             'data' => $product,
             'message' => 'Create Product Successfully.'
+        ], Response::HTTP_OK);
+    }
+
+    public function showFormEdit(string $id)
+    {
+        $data = [];
+        $product = $this->product->findOrFail($id);
+
+        if (!isset($product)){
+            return redirect()->route('product.list')->withErrors([
+                'error' => 'Product not found.',
+            ]);
+        }
+        $categories = Category::orderBy('name', 'ASC')->get();
+        $sizes = Size::orderBy('name', 'ASC')->get();
+        $colors = Color::orderBy('name', 'ASC')->get();
+        $productImages = ProductImage::where('product_id',$product->id)->get();
+        $data['productImages'] = $productImages;
+        $data['product'] = $product;
+        $data['categories'] = $categories;
+        $data['sizes'] = $sizes;
+        $data['colors'] = $colors;
+        return view('admin.product.edit', compact('data'));
+    }
+
+    public function update(UpdateRequest $request, string $id)
+    {
+        $product = $this->product->findOrFail($id);
+
+        $sizeIds = $request->input('sizeIds');
+        $colorIds = $request->input('colorIds');
+        $product->update($request->all());
+        $product->syncSizes($sizeIds);
+        $product->syncColors($colorIds);
+
+        //Save Gallery
+        if (!empty($request->image_array)) {
+            foreach ($request->image_array as $key => $imageId) {
+                $productImage = ProductImage::find($imageId);
+                $productImage->save();
+            }
+        }
+
+        return response()->json([
+            'data' => $product,
+            'message' => 'Updated Product Successfully.'
+        ], Response::HTTP_OK);
+    }
+
+    public function deleteProduct(string $id)
+    {
+        $product = $this->product->findOrFail($id);
+
+        $productImages = ProductImage::where('product_id', $product->id)->get();
+        if (!empty($productImages)){
+            foreach ($productImages as $productImage){
+                File::delete(public_path('uploads/products/small/'.$productImage->image));
+                File::delete(public_path('uploads/products/large/'.$productImage->image));
+            }
+            ProductImage::where('product_id', $product->id)->delete();
+        }
+
+        $product->delete();
+        return response()->json([
+            'message' => 'Product deleted successfully.'
         ], Response::HTTP_OK);
     }
 }
