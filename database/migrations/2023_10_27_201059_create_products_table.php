@@ -15,13 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->text('description');
-            $table->boolean('gender');
-            $table->double('price');
-            $table->string('image');
+            $table->integer('gender')->default(1);
+            $table->double('price',10,2);
+            $table->double('compare_price',10,2)->nullable();
             $table->unsignedBigInteger('category_id'); // Sử dụng unsignedBigInteger thay vì unsignedInteger
             $table->foreign('category_id')
                 ->references('id')->on('categories')
                 ->onDelete('cascade');
+            $table->enum('is_featured', ['Yes', 'No'])->default('No');
+            $table->integer('qty')->nullable();
+            $table->enum('track_qty', ['Yes', 'No'])->default('Yes');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

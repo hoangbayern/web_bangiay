@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
+    <!-- Dropzone -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/dropzone.min.css') }}">
     <style>
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background-color: #321fcf;
@@ -91,6 +93,8 @@
 <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <!-- sweetalert2 -->
+{{--Dropzone--}}
+<script src="{{ asset('assets/dist/js/dropzone.min.js') }}"></script>
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
 <script type="module" src="{{ asset('assets/js/notification.js') }}"></script>
 <script type="module" src="{{ asset('assets/js/image.js') }}"></script>
@@ -109,6 +113,8 @@
         $('#datemask2').inputmask('mm/dd/yyyy', {'placeholder': 'mm/dd/yyyy'})
         //Money Euro
         $('[data-mask]').inputmask()
+        // Summernote
+        $('#summernote').summernote()
     });
     @error('warning')
     toastr.warning('{{ $message }}');
@@ -118,5 +124,7 @@
     toastr.success('{{ $message }}');
     @enderror
 </script>
+@stack('scripts')
+
 </body>
 </html>
