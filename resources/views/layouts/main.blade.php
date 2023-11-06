@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
+    <!-- Dropzone -->
+    <link rel="stylesheet" href="{{ asset('assets/dist/css/dropzone.min.css') }}">
     <style>
         .select2-container--default .select2-selection--multiple .select2-selection__choice {
             background-color: #321fcf;
@@ -91,6 +93,8 @@
 <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <!-- sweetalert2 -->
+{{--Dropzone--}}
+<script src="{{ asset('assets/dist/js/dropzone.min.js') }}"></script>
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
 <script type="module" src="{{ asset('assets/js/notification.js') }}"></script>
 <script type="module" src="{{ asset('assets/js/image.js') }}"></script>
@@ -119,6 +123,41 @@
     @error('success')
     toastr.success('{{ $message }}');
     @enderror
+
+        Dropzone.autoDiscover = false;
+    const dropzone = $("#image").dropzone({
+        uploadprogress: function(file, progress, bytesSent) {
+            $("button[type=submit]").prop('disabled',true);
+        },
+        url:  "{{ route('temp-images.create') }}",
+        maxFiles: 10,
+        paramName: 'image',
+        addRemoveLinks: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }, success: function(file, response){
+            console.log(response);
+            var html = `<div class="col-md-3 mb-3" id="product-image-row-${response.image_id}">
+                            <div class="card image-card">
+                               <input type="hidden" name="image_array[]" value="${response.image_id}"/>
+                                <img src="${response.imagePath}" alt="" class="w-100 card-img-top">
+                                <div class="card-body">
+                                    <a href="javascript:void(0)" onclick="deleteImage(${response.image_id});" class="btn btn-danger">Delete</a>
+
+                                </div>
+                            </div>
+                        </div>`;
+            $("#image-wrapper").append(html);
+            $("button[type=submit]").prop('disabled',false);
+            this.removeFile(file);
+        }
+    });
+    function deleteImage(id){
+        if (confirm("Are you sure you want to delete?")) {
+            $("#product-image-row-"+id).remove();
+        }
+    }
 </script>
 </body>
 </html>

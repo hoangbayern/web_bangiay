@@ -11,7 +11,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('adminHome')}}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">List Product</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('product.list')}}">List Product</a></li>
                             <li class="breadcrumb-item active">Create Product</li>
                         </ol>
                     </div><!-- /.col -->
@@ -46,6 +46,19 @@
                             <div class="form-group required">
                                 <label for="inputDescription">Product Description</label>
                                 <textarea id="summernote" name="description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputImage">Product Image</label>
+                                <div id="image" class="dropzone dz-clickable">
+                                    <div class="dz-message needsclick">
+                                        <br>Drop files here or click to upload.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row" id="image-wrapper">
+
+                                </div>
                             </div>
                             <div class="form-group required">
                                 <label for="inputStatus">Gender</label>
@@ -165,7 +178,7 @@
             </form>
             <div class="row mb-3">
                 <div class="col-12">
-                    <a href="#" class="btn btn-secondary">Cancel</a>
+                    <a href="{{route('product.list')}}" class="btn btn-secondary">Cancel</a>
                     <button type="button" class="btn btn-success float-right btn-save">Create</button>
                 </div>
             </div>
