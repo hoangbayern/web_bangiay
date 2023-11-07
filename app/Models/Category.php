@@ -13,6 +13,7 @@ class Category extends Model
         'name',
         'description',
         'status',
+        'showHome',
     ];
 
     public function products()

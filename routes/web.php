@@ -5,6 +5,7 @@ foreach (File::allFiles(__DIR__ ) as $route_file) {
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/admin', function () {
     return view('admin-home');
 })->name('adminHome')->middleware('auth:admin');
-Route::get('/', function () {
-    return view('');
-})->name('');
+
+Route::get('/', [ClientController::class, 'index'])->name('client.home');
 
 Auth::routes();
 
