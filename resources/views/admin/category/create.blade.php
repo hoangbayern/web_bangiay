@@ -56,6 +56,13 @@
                                     <option value="0">Inactive</option>
                                 </select>
                             </div>
+                                <div class="form-group mb-3">
+                                    <label for="inputStatus">Show Home</label>
+                                    <select id="showHome" name="showHome" class="form-control custom-select">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
                             </form>
                         </div>
                         <!-- /.card-body -->

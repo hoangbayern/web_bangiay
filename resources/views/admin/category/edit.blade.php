@@ -56,6 +56,13 @@
                                         <option {{($category->status === 0) ? 'selected' : ''}} value="0">Inactive</option>
                                     </select>
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label for="inputStatus">Show Home</label>
+                                    <select id="showHome" name="showHome" class="form-control custom-select">
+                                        <option {{($category->showHome === 'Yes') ? 'selected' : ''}} value="Yes">Yes</option>
+                                        <option {{($category->showHome === 'No') ? 'selected' : ''}} value="No">No</option>
+                                    </select>
+                                </div>
                                 <div class="row mb-3">
                                     <div class="col-12">
                                         <a href="#" class="btn btn-secondary">Cancel</a>
