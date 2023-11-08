@@ -27,7 +27,7 @@
                                     @foreach($categories as $category)
                                         <div class="accordion-item">
                                             <h6 class="accordion-header" id="headingOne">
-                                                <a href="#" class="nav-item nav-link">{{$category->name}}</a>
+                                                <a href="{{route('client.shop', $category->name)}}" class="nav-item nav-link {{ ($categorySelected === $category->id) ? 'text-primary' : '' }}">{{$category->name}}</a>
                                             </h6>
 {{--                                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">--}}
 {{--                                                <div class="accordion-body">--}}
@@ -57,7 +57,7 @@
                             @if($sizes->isNotEmpty())
                                 @foreach($sizes as $size)
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input class="form-check-input size-label" {{ (in_array($size->id, $sizeArray)) ? 'checked' : '' }} type="checkbox" name="size[]" value="{{$size->id}}" id="size-{{ $size->id }}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$size->name}}
                                         </label>
@@ -77,7 +77,7 @@
                             @if($colors->isNotEmpty())
                                 @foreach($colors as $color)
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input class="form-check-input color-label" {{ (in_array($color->id, $colorArray)) ? 'checked' : '' }} type="checkbox" name="color[]" value="{{$color->id}}" id="color-{{ $color->id }}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$color->name}}
                                         </label>
@@ -94,30 +94,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    $0-$100
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $100-$200
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $200-$500
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $500+
-                                </label>
-                            </div>
+                            <input type="text" class="js-range-slider" name="my_range" value="" />
                         </div>
                     </div>
                 </div>
@@ -193,4 +170,55 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('customJs')
+<script>
+    rangeSlider = $(".js-range-slider").ionRangeSlider({
+        type: "double",
+        min: 0,
+        max: 1000000,
+        from: 100000,
+        step: 10000,
+        to: 500000,
+        skin: "round",
+        max_postfix: "+",
+        onFinish: function () {
+            apply_filters()
+        }
+    });
+    var slider = $(".js-range-slider").data("ionRangeSlider");
+
+    $(".size-label, .color-label").change(function () {
+        apply_filters();
+    })
+
+    function apply_filters() {
+        var sizes = [];
+        var colors = [];
+
+        $(".size-label").each(function () {
+            if ($(this).is(":checked") == true) {
+                sizes.push($(this).val());
+            }
+        });
+
+        $(".color-label").each(function () {
+            if ($(this).is(":checked") == true) {
+                colors.push($(this).val());
+            }
+        });
+
+        var url = '{{ url()->current() }}?';
+        if (sizes.length > 0) {
+            url += '&size=' + sizes.toString();
+        }
+        if (colors.length > 0) {
+            url += '&color=' + colors.toString();
+        }
+        url += '&price_min='+slider.result.from+'&price_max='+slider.result.to;
+
+        window.location.href = url;
+    }
+</script>
 @endsection

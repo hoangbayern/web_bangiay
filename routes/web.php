@@ -24,7 +24,7 @@ Route::get('/admin', function () {
 })->name('adminHome')->middleware('auth:admin');
 
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
-Route::get('/shop', [ShopController::class, 'index'])->name('client.shop');
+Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('client.shop');
 
 Auth::routes();
 

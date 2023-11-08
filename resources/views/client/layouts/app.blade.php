@@ -35,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/slick-theme.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/video-js.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/ion.rangeSlider.min.css') }}" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -174,6 +175,7 @@
 <script src="{{ asset('client-assets/js/instantpages.5.1.0.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/lazyload.17.6.0.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/slick.min.js') }}"></script>
+<script src="{{ asset('client-assets/js/ion.rangeSlider.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/custom.js') }}"></script>
 
 <script>
@@ -190,5 +192,6 @@
         }
     }
 </script>
+@yield('customJs')
 </body>
 </html>
