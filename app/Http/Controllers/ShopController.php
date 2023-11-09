@@ -42,12 +42,31 @@ class ShopController extends Controller
             });
         }
 
-        if ($request->get('price_min') !== '' && $request->get('price_max') !== ''){
-            $products = $products->whereBetween('price', [$request->get('price_min'), $request->get('price_max')]);
+        if ($request->get('price_min') != '' && $request->get('price_max') != ''){
+            if ($request->get('price_max') == 1000000){
+                $products = $products->whereBetween('price', [intval($request->get('price_min')), 10000000]);
+            }
+            else {
+                $products = $products->whereBetween('price', [intval($request->get('price_min')), intval($request->get('price_max'))]);
+            }
+        }
+
+        if ($request->get('sort') != ''){
+            if ($request->get('sort') == 'latest'){
+                $products = $products->orderBy('id', 'DESC');
+            }
+            elseif ($request->get('sort') == 'price_high'){
+                $products = $products->orderBy('price', 'DESC');
+            }
+            else {
+                $products = $products->orderBy('price', 'ASC');
+            }
+        } else {
+            $products = $products->orderBy('id', 'DESC');
         }
 
         $products = $products->orderBy('id', 'DESC');
-        $products = $products->get();
+        $products = $products->paginate(9);
 
         $data['categories'] = $categories;
         $data['sizes'] = $sizes;
@@ -56,6 +75,9 @@ class ShopController extends Controller
         $data['categorySelected'] = $categorySelected;
         $data['sizeArray'] = $sizeArray;
         $data['colorArray'] = $colorArray;
+        $data['priceMax'] = (intval($request->get('price_max')) == 0 ? 1000000 : $request->get('price_max'));
+        $data['priceMin'] = intval($request->get('price_min'));
+        $data['sort'] = $request->get('sort');
         return view('client.shop', $data);
     }
 }

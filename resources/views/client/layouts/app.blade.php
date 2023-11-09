@@ -90,18 +90,7 @@
 
                     @if(getCategories()->isNotEmpty())
                         @foreach(getCategories() as $category)
-                            <li class="nav-item dropdown">
-                                <button class="btn btn-dark" data-bs-toggle="dropdow" aria-expanded="false">
-                                    {{$category->name}}
-                                </button>
-                                {{--                                <ul class="dropdown-menu dropdown-menu-dark">--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Mobile</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Tablets</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Laptops</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Speakers</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Watches</a></li>--}}
-                                {{--                                </ul>--}}
-                            </li>
+                            <a class="dropdown-item nav-link" href="{{route('client.shop', $category->name)}}">{{$category->name}}</a>
                         @endforeach
                     @endif
 
