@@ -49,6 +49,20 @@
                     </div>
 
                     <div class="sub-title mt-5">
+                        <h2>Gender</h2>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <select name="gender" id="gender" class="form-control">
+                                <option {{ ($gender == 'gender_all') ? 'selected' : '' }} value="gender_all">Male & Female</option>
+                                <option {{ ($gender == 'gender_male') ? 'selected' : '' }} value="gender_male">Male</option>
+                                <option {{ ($gender == 'gender_female') ? 'selected' : '' }} value="gender_female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sub-title mt-5">
                         <h2>Size</h2>
                     </div>
 
@@ -112,7 +126,7 @@
 {{--                                        </div>--}}
 {{--                                    </div>--}}
                                     <select name="sort" id="sort" class="form-control">
-                                        <option {{ ($sort == 'latets') ? 'selected' : '' }} value="latest">Latest</option>
+                                        <option {{ ($sort == 'latest') ? 'selected' : '' }} value="latest">Latest</option>
                                         <option {{ ($sort == 'price_high') ? 'selected' : '' }} value="price_high">Price High</option>
                                         <option {{ ($sort == 'price_low') ? 'selected' : '' }} value="price_low">Price Low</option>
                                     </select>
@@ -144,9 +158,9 @@
                                         <div class="card-body text-center mt-3">
                                             <a class="h6 link" href="product.php">{{$product->name}}</a>
                                             <div class="price mt-2">
-                                                <span class="h5"><strong>{{number_format($product->price)}} VND</strong></span>
+                                                <span class="h5"><strong>{{number_format($product->price)}}₫</strong></span>
                                                 @if($product->compare_price > 0)
-                                                    <span class="h6 text-underline"><del>{{number_format($product->compare_price)}}VND</del></span>
+                                                    <span class="h6 text-underline"><del>{{number_format($product->compare_price)}}₫</del></span>
                                                 @endif
                                             </div>
                                         </div>
@@ -176,6 +190,7 @@
         to: {{ $priceMax }},
         skin: "round",
         max_postfix: "+",
+        prefix: "₫",
         onFinish: function () {
             apply_filters()
         }
@@ -187,6 +202,10 @@
     })
 
     $("#sort").change(function () {
+        apply_filters();
+    })
+
+    $("#gender").change(function () {
         apply_filters();
     })
 
@@ -216,6 +235,8 @@
         url += '&price_min=' + slider.result.from + '&price_max=' + slider.result.to;
 
         url += '&sort=' + $("#sort").val();
+
+        url += '&gender=' + $("#gender").val();
 
         window.location.href = url;
     }

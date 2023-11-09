@@ -168,4 +168,9 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully.'
         ], Response::HTTP_OK);
     }
+
+    public function getProducts(Request $request)
+    {
+
+    }
 }

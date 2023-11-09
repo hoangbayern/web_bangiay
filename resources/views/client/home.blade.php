@@ -135,7 +135,7 @@
                         <div class="col-md-3">
                             <div class="card product-card">
                                 <div class="product-image position-relative">
-                                    <a href="" class="product-img">
+                                    <a href="{{ route('client.product', $product->name) }}" class="product-img">
                                         @if(!empty($productImage->image))
                                             <img class="card-img-top" src="{{asset('uploads/products/small/'.$productImage->image)}}" alt="imgProduct">
                                         @else
@@ -153,9 +153,9 @@
                                 <div class="card-body text-center mt-3">
                                     <a class="h6 link" href="product.php">{{$product->name}}</a>
                                     <div class="price mt-2">
-                                        <span class="h5"><strong>{{number_format($product->price)}} VND</strong></span>
+                                        <span class="h5"><strong>{{number_format($product->price)}}₫</strong></span>
                                         @if($product->compare_price > 0)
-                                            <span class="h6 text-underline"><del>{{number_format($product->compare_price)}}VND</del></span>
+                                            <span class="h6 text-underline"><del>{{number_format($product->compare_price)}}₫</del></span>
                                         @endif
                                     </div>
                                 </div>
@@ -180,7 +180,7 @@
                         <div class="col-md-3">
                             <div class="card product-card">
                                 <div class="product-image position-relative">
-                                    <a href="" class="product-img">
+                                    <a href="{{ route('client.product', $product->name) }}" class="product-img">
                                         @if(!empty($productImage->image))
                                             <img class="card-img-top" src="{{asset('uploads/products/small/'.$productImage->image)}}" alt="imgProduct">
                                         @else
@@ -198,9 +198,9 @@
                                 <div class="card-body text-center mt-3">
                                     <a class="h6 link" href="product.php">{{$product->name}}</a>
                                     <div class="price mt-2">
-                                        <span class="h5"><strong>{{number_format($product->price)}} VND</strong></span>
+                                        <span class="h5"><strong>{{number_format($product->price)}}₫</strong></span>
                                         @if($product->compare_price > 0)
-                                            <span class="h6 text-underline"><del>{{number_format($product->compare_price)}}VND</del></span>
+                                            <span class="h6 text-underline"><del>{{number_format($product->compare_price)}}₫</del></span>
                                         @endif
                                     </div>
                                 </div>
