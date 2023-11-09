@@ -6,6 +6,7 @@ foreach (File::allFiles(__DIR__ ) as $route_file) {
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ Route::get('/admin', function () {
 })->name('adminHome')->middleware('auth:admin');
 
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
+Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('client.shop');
 
 Auth::routes();
 

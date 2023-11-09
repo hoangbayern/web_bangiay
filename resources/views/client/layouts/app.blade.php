@@ -35,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/slick-theme.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/video-js.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/style.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/ion.rangeSlider.min.css') }}" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,18 +90,7 @@
 
                     @if(getCategories()->isNotEmpty())
                         @foreach(getCategories() as $category)
-                            <li class="nav-item dropdown">
-                                <button class="btn btn-dark" data-bs-toggle="dropdow" aria-expanded="false">
-                                    {{$category->name}}
-                                </button>
-                                {{--                                <ul class="dropdown-menu dropdown-menu-dark">--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Mobile</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Tablets</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Laptops</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Speakers</a></li>--}}
-                                {{--                                    <li><a class="dropdown-item nav-link" href="#">Watches</a></li>--}}
-                                {{--                                </ul>--}}
-                            </li>
+                            <a class="dropdown-item nav-link" href="{{route('client.shop', $category->name)}}">{{$category->name}}</a>
                         @endforeach
                     @endif
 
@@ -174,6 +164,7 @@
 <script src="{{ asset('client-assets/js/instantpages.5.1.0.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/lazyload.17.6.0.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/slick.min.js') }}"></script>
+<script src="{{ asset('client-assets/js/ion.rangeSlider.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/custom.js') }}"></script>
 
 <script>
@@ -190,5 +181,6 @@
         }
     }
 </script>
+@yield('customJs')
 </body>
 </html>
