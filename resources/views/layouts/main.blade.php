@@ -102,36 +102,22 @@
 <script type="module" src="{{ asset('assets/js/main.js') }}"></script>
 <script type="module" src="{{ asset('assets/js/action.js') }}"></script>
 <script>
-    $(".related-product-new").select2({
-        minimumInputLength: 2,
-        tags: [],
-        ajax: {
-            url: '{{ route('product.getProducts') }}',
-            dataType: 'json',
-            type: "GET",
-            quietMillis: 50,
-            data: function (term) {
-                return {
-                    term: term
-                };
-            },
-            results: function (data) {
-                return {
-                    results: $.map(data, function (item) {
-                        return {
-                            text: item.completeName,
-                            slug: item.slug,
-                            id: item.id
-                        }
-                    })
-                };
-            }
-        }
-    });
-</script>
-<script>
     $(function () {
         $('.select2').select2()
+        $('.related-product').select2({
+            ajax: {
+                url: '{{ route('product.getProducts') }}',
+                dataType: 'json',
+                tags: true,
+                multiple: true,
+                minimumInputLength: 3,
+                processResults: function (data) {
+                    return {
+                        results: data.tags
+                    };
+                }
+            }
+        });
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })

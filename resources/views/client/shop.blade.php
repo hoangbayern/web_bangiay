@@ -5,7 +5,7 @@
         <div class="container">
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a class="white-text" href="{{route('client.home')}}">Home</a></li>
                     <li class="breadcrumb-item active">Shop</li>
                 </ol>
             </div>
@@ -140,7 +140,7 @@
                                 <div class="col-md-4">
                                     <div class="card product-card">
                                         <div class="product-image position-relative">
-                                            <a href="" class="product-img">
+                                            <a href="{{route('client.product', $product->name)}}" class="product-img">
                                                 @if(!empty($productImage->image))
                                                     <img class="card-img-top" src="{{asset('uploads/products/small/'.$productImage->image)}}" alt="imgProduct">
                                                 @else
@@ -150,8 +150,8 @@
                                             <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                             <div class="product-action">
-                                                <a class="btn btn-dark" href="#">
-                                                    <i class="fa fa-shopping-cart"></i> Add To Cart
+                                                <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
+                                                    <i class="fa fa-shopping-cart"></i> Buy Now
                                                 </a>
                                             </div>
                                         </div>

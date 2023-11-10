@@ -105,6 +105,12 @@
                                     <option value="Yes">Yes</option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="related_products">Related product</label>
+                                <select class="related-product w-100" multiple name="related_products[]" id="related_products">
+
+                                </select>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>

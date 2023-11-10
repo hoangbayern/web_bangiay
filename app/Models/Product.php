@@ -17,6 +17,7 @@ class Product extends Model
         'compare_price',
         'category_id',
         'is_featured',
+        'related_products',
         'qty',
         'track_qty',
         'status',

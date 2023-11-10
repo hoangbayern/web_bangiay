@@ -57,6 +57,7 @@ class ProductController extends Controller
     public function store(StoreRequest $request)
     {
         $dataProduct = $request->all();
+        $dataProduct['related_products'] = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
         $sizeIds = $request->input('sizeIds');
         $colorIds = $request->input('colorIds');
         $product = $this->product->create($dataProduct);
@@ -118,21 +119,30 @@ class ProductController extends Controller
         $sizes = Size::orderBy('name', 'ASC')->get();
         $colors = Color::orderBy('name', 'ASC')->get();
         $productImages = ProductImage::where('product_id',$product->id)->get();
+        $related_products = [];
+        if ($product->related_products != ''){
+            $productArr = explode(',', $product->related_products);
+            $related_products = $this->product->whereIn('id', $productArr)->get();
+        }
+
         $data['productImages'] = $productImages;
         $data['product'] = $product;
         $data['categories'] = $categories;
         $data['sizes'] = $sizes;
         $data['colors'] = $colors;
+        $data['related_products'] = $related_products;
         return view('admin.product.edit', compact('data'));
     }
 
     public function update(UpdateRequest $request, string $id)
     {
         $product = $this->product->findOrFail($id);
+        $dataProduct = $request->all();
 
         $sizeIds = $request->input('sizeIds');
         $colorIds = $request->input('colorIds');
-        $product->update($request->all());
+        $dataProduct['related_products'] = (!empty($request->related_products)) ? implode(',', $request->related_products) : '';
+        $product->update($dataProduct);
         $product->syncSizes($sizeIds);
         $product->syncColors($colorIds);
 
@@ -176,10 +186,13 @@ class ProductController extends Controller
             $products = $this->product->where('name', 'like', '%'.$request->term.'%')->get();
             if ($products != null){
                 foreach ($products as $product){
-                    $tempProduct[] = array('id' => $product->id, 'name' => $product->name);
+                    $tempProduct[] = array('id' => $product->id, 'text' => $product->name);
                 }
             }
         }
-        print_r($tempProduct);
+        return response()->json([
+            'tags' => $tempProduct,
+            'status' => true,
+        ], Response::HTTP_OK);
     }
 }

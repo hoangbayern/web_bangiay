@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Shoes Store</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
 
@@ -36,6 +37,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/video-js.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/style.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/ion.rangeSlider.min.css') }}" />
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +54,7 @@
     <div class="container">
         <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
             <div class="col-lg-4 logo">
-                <a href="index.php" class="text-decoration-none">
+                <a href="{{route('client.home')}}" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">Shoes</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Store</span>
                 </a>
@@ -74,9 +77,9 @@
 <header class="bg-dark">
     <div class="container">
         <nav class="navbar navbar-expand-xl" id="navbar">
-            <a href="index.php" class="text-decoration-none mobile-logo">
-                <span class="h2 text-uppercase text-primary bg-dark">Online</span>
-                <span class="h2 text-uppercase text-white px-2">SHOP</span>
+            <a href="{{route('client.home')}}" class="text-decoration-none mobile-logo">
+                <span class="h2 text-uppercase text-primary bg-dark">SHOES</span>
+                <span class="h2 text-uppercase text-white px-2">STORE</span>
             </a>
             <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <!-- <span class="navbar-toggler-icon icon-menu"></span> -->
@@ -93,12 +96,12 @@
                             <a class="dropdown-item nav-link" href="{{route('client.shop', $category->name)}}">{{$category->name}}</a>
                         @endforeach
                     @endif
-
+                    <a class="dropdown-item nav-link" href="{{route('client.shop')}}">Shop Products</a>
                 </ul>
             </div>
             <div class="right-nav py-0">
-                <a href="cart.php" class="ml-3 d-flex pt-2">
-                    <i class="fas fa-shopping-cart text-primary"></i>
+                <a href="{{route('client.cart')}}" class="ml-3 d-flex pt-2">
+                    <i class="fas fa-shopping-bag text-primary"></i>
                 </a>
             </div>
         </nav>
@@ -165,6 +168,8 @@
 <script src="{{ asset('client-assets/js/lazyload.17.6.0.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/slick.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/ion.rangeSlider.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/custom.js') }}"></script>
 
 <script>
@@ -180,6 +185,19 @@
             navbar.classList.remove("sticky");
         }
     }
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $("meta[name=\"csrf-token\"]").attr("content")
+        }
+    });
+
+    @error('warning')
+    toastr.warning('{{ $message }}');
+    @enderror
+
+    @error('success')
+    toastr.success('{{ $message }}');
+    @enderror
 </script>
 @yield('customJs')
 </body>
