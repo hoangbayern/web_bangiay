@@ -25,6 +25,7 @@ Route::get('/admin', function () {
 
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('client.shop');
+Route::get('/product/{productName}', [ShopController::class, 'product'])->name('client.product');
 
 Auth::routes();
 

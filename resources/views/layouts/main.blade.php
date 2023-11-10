@@ -75,7 +75,7 @@
 <!-- Bootstrap 4 -->
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- Select2 -->
-<script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <!-- Sparkline -->
 <script src="{{ asset('assets/plugins/sparklines/sparkline.js') }}"></script>
 <script src="{{ asset('assets/plugins/daterangepicker/daterangepicker.js') }}"></script>
@@ -101,6 +101,34 @@
 <script type="module" src="{{ asset('assets/js/user.js') }}"></script>
 <script type="module" src="{{ asset('assets/js/main.js') }}"></script>
 <script type="module" src="{{ asset('assets/js/action.js') }}"></script>
+<script>
+    $(".related-product-new").select2({
+        minimumInputLength: 2,
+        tags: [],
+        ajax: {
+            url: '{{ route('product.getProducts') }}',
+            dataType: 'json',
+            type: "GET",
+            quietMillis: 50,
+            data: function (term) {
+                return {
+                    term: term
+                };
+            },
+            results: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.completeName,
+                            slug: item.slug,
+                            id: item.id
+                        }
+                    })
+                };
+            }
+        }
+    });
+</script>
 <script>
     $(function () {
         $('.select2').select2()

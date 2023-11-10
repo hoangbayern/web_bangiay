@@ -20,6 +20,8 @@ Route::prefix('admin/products')->controller(ProductController::class)->as('produ
         ->middleware('auth:admin');
     Route::get('/search', 'search')->name('search')
         ->middleware('auth:admin');
+    Route::get('/get-products', 'getProducts')->name('getProducts')
+        ->middleware('auth:admin');
 //    Route::get('/show/{id}', 'show')->name('show')
 //        ->middleware('auth')
 //        ->middleware('permission:product.show');

@@ -65,6 +65,20 @@ class ShopController extends Controller
             $products = $products->orderBy('id', 'DESC');
         }
 
+        if ($request->get('gender') != ''){
+            if ($request->get('gender') == 'gender_male'){
+                $products = $products->where('gender', 1);
+            }
+            elseif ($request->get('gender') == 'gender_female'){
+                $products = $products->where('gender', 0);
+            }
+            else {
+                $products = $products->orderBy('id', 'DESC');
+            }
+        } else {
+            $products = $products->orderBy('id', 'DESC');
+        }
+
         $products = $products->orderBy('id', 'DESC');
         $products = $products->paginate(9);
 
@@ -78,6 +92,18 @@ class ShopController extends Controller
         $data['priceMax'] = (intval($request->get('price_max')) == 0 ? 1000000 : $request->get('price_max'));
         $data['priceMin'] = intval($request->get('price_min'));
         $data['sort'] = $request->get('sort');
+        $data['gender'] = $request->get('gender');
         return view('client.shop', $data);
+    }
+
+    public function product($productName)
+    {
+        $data = [];
+        $product = Product::where('name', $productName)->with('product_images')->first();
+        if ($product == null){
+            abort(404);
+        }
+        $data['product'] = $product;
+        return view('client.product', $data);
     }
 }
