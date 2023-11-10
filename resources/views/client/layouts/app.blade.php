@@ -54,7 +54,7 @@
     <div class="container">
         <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
             <div class="col-lg-4 logo">
-                <a href="index.php" class="text-decoration-none">
+                <a href="{{route('client.home')}}" class="text-decoration-none">
                     <span class="h1 text-uppercase text-primary bg-dark px-2">Shoes</span>
                     <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Store</span>
                 </a>
@@ -77,9 +77,9 @@
 <header class="bg-dark">
     <div class="container">
         <nav class="navbar navbar-expand-xl" id="navbar">
-            <a href="index.php" class="text-decoration-none mobile-logo">
-                <span class="h2 text-uppercase text-primary bg-dark">Online</span>
-                <span class="h2 text-uppercase text-white px-2">SHOP</span>
+            <a href="{{route('client.home')}}" class="text-decoration-none mobile-logo">
+                <span class="h2 text-uppercase text-primary bg-dark">SHOES</span>
+                <span class="h2 text-uppercase text-white px-2">STORE</span>
             </a>
             <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <!-- <span class="navbar-toggler-icon icon-menu"></span> -->
@@ -96,12 +96,12 @@
                             <a class="dropdown-item nav-link" href="{{route('client.shop', $category->name)}}">{{$category->name}}</a>
                         @endforeach
                     @endif
-
+                    <a class="dropdown-item nav-link" href="{{route('client.shop')}}">Shop Products</a>
                 </ul>
             </div>
             <div class="right-nav py-0">
-                <a href="cart.php" class="ml-3 d-flex pt-2">
-                    <i class="fas fa-shopping-cart text-primary"></i>
+                <a href="{{route('client.cart')}}" class="ml-3 d-flex pt-2">
+                    <i class="fas fa-shopping-bag text-primary"></i>
                 </a>
             </div>
         </nav>

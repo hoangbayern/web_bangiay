@@ -171,7 +171,6 @@
                 success : function(response) {
                     if (response.status == true){
                         window.location.href = "{{ route('client.cart') }}"
-                        toastr.success(response.message);
                     }
                     else {
                         toastr.warning(response.message);

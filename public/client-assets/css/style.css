@@ -4,4 +4,6 @@
 .pagination {
 float: right !important;
 }
-/*Test swatch size and color*/
+button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled){
+    float: right !important;
+}

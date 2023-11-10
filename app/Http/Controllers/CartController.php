@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Size;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CartController extends Controller
 {
@@ -48,12 +49,12 @@ class CartController extends Controller
                     ]
                 );
                 $status = true;
-                $message = $product->name . ' added in cart';
+                $message = '<strong>'.$product->name . '</strong> added in your cart successfully';
                 session()->flash('success', $message);
             }
             else{
                 $status = false;
-                $message = $product->name . ' already added in cart';
+                $message = $product->name . ' already added in your cart';
             }
         } else {
             Cart::add(
@@ -68,7 +69,7 @@ class CartController extends Controller
                 ]
             );
             $status = true;
-            $message = $product->name . ' added in cart';
+            $message = '<strong>'.$product->name . '</strong> added in your cart successfully';
             session()->flash('success', $message);
         }
 
@@ -84,5 +85,31 @@ class CartController extends Controller
 //        dd($cartContent);
         $data['cartContent'] = $cartContent;
         return view('client.cart', $data);
+    }
+
+    public function updateCart(Request $request)
+    {
+        $rowId = $request->rowId;
+        $qty = $request->qty;
+        Cart::update($rowId, $qty);
+
+        $message = 'Cart Updated Successfully.';
+        session()->flash('success', $message);
+        return response()->json([
+            'status' => true,
+            'message' => 'Cart Updated Successfully'
+        ], Response::HTTP_OK);
+    }
+
+    public function deleteItemCart(Request $request)
+    {
+        $rowId = $request->rowId;
+        Cart::remove($rowId);
+        $status = true;
+        $message = 'Delete Cart Success';
+        return response()->json([
+           'status' => $status,
+           'message' => $message,
+        ]);
     }
 }

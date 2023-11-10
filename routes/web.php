@@ -29,6 +29,8 @@ Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('cli
 Route::get('/product/{productName}', [ShopController::class, 'product'])->name('client.product');
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 Route::post('/addCart', [CartController::class, 'addCart'])->name('client.addCart');
+Route::post('/updateCart', [CartController::class, 'updateCart'])->name('client.updateCart');
+Route::post('/deleteCart', [CartController::class, 'deleteItemCart'])->name('client.deleteItemCart');
 
 Auth::routes();
 

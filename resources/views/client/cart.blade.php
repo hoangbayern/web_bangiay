@@ -19,13 +19,12 @@
                 @if(\Illuminate\Support\Facades\Session::has('success'))
                     <div class="col-md-12">
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ \Illuminate\Support\Facades\Session::get('success') }}
-                            <button type="button" class="close float-right" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            {!! \Illuminate\Support\Facades\Session::get('success') !!}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </div>
                 @endif
+                    @if(\Gloudemans\Shoppingcart\Facades\Cart::count() > 0)
                 <div class="col-md-8">
                     <div class="table-responsive">
                         <table class="table" id="cart">
@@ -41,7 +40,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @if(!empty($cartContent))
                                 @foreach($cartContent as $item)
                                     <tr>
                                         <td>
@@ -66,13 +64,13 @@
                                         <td>
                                             <div class="input-group quantity mx-auto" style="width: 100px;">
                                                 <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-dark btn-minus p-2 pt-1 pb-1">
+                                                    <button class="btn btn-sm btn-dark btn-minus p-2 pt-1 pb-1 sub" data-id="{{$item->rowId}}">
                                                         <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
                                                 <input type="text" class="form-control form-control-sm  border-0 text-center" value="{{ $item->qty }}">
                                                 <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-dark btn-plus p-2 pt-1 pb-1">
+                                                    <button class="btn btn-sm btn-dark btn-plus p-2 pt-1 pb-1 add" data-id="{{$item->rowId}}">
                                                         <i class="fa fa-plus"></i>
                                                     </button>
                                                 </div>
@@ -82,14 +80,14 @@
                                             {{ number_format($item->price * $item->qty) }}
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteItemCart('{{$item->rowId}}');"><i class="fa fa-times"></i></button>
                                         </td>
                                     </tr>
                                 @endforeach
-                            @endif
                             </tbody>
                         </table>
                     </div>
+
                 </div>
                 <div class="col-md-4">
                     <div class="card cart-summery">
@@ -99,7 +97,7 @@
                         <div class="card-body">
                             @php
                                 $subtotal = floatval(str_replace(',', '', \Gloudemans\Shoppingcart\Facades\Cart::subtotal()));
-                                $shipping = 20000; // Giả sử phí vận chuyển là 20000₫
+                                $shipping = (\Gloudemans\Shoppingcart\Facades\Cart::count() > 0) ? 20000 : 0; // Giả sử phí vận chuyển là 20000₫
                                 $total = $subtotal + $shipping;
                             @endphp
                             <div class="d-flex justify-content-between pb-2">
@@ -117,6 +115,9 @@
                             <div class="pt-5">
                                 <a href="login.php" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
                             </div>
+                            <div class="pt-3">
+                                <a href="{{ route('client.shop') }}" class="btn-dark btn btn-block w-100">Buy more products</a>
+                            </div>
                         </div>
                     </div>
 {{--                    <div class="input-group apply-coupan mt-4">--}}
@@ -124,8 +125,80 @@
 {{--                        <button class="btn btn-dark" type="button" id="button-addon2">Apply Coupon</button>--}}
 {{--                    </div>--}}
                 </div>
+                    @else
+                        <div class="col-md-12 text-center">
+                            <p>Chưa có sản phẩm nào trong giỏ hàng.</p>
+                            <div class="pt-3">
+                                <a href="{{ route('client.shop') }}" class="btn-dark btn btn-block w-50">Back to the Shop</a>
+                            </div>
+                        </div>
+                    @endif
             </div>
         </div>
     </section>
 @endsection
 
+@section('customJs')
+<script type="text/javascript">
+    $('.add').click(function(){
+        var qtyElement = $(this).parent().prev(); // Qty Input
+        var qtyValue = parseInt(qtyElement.val());
+        var rowId = $(this).data('id');
+        if (qtyValue < 10) {
+            qtyElement.val(qtyValue+1);
+            var newQty = qtyElement.val();
+            addToCart(rowId, newQty);
+        }
+    });
+
+    $('.sub').click(function(){
+        var qtyElement = $(this).parent().next();
+        var qtyValue = parseInt(qtyElement.val());
+        var rowId = $(this).data('id');
+        if (qtyValue > 1) {
+            qtyElement.val(qtyValue-1);
+            var newQty = qtyElement.val();
+            addToCart(rowId, newQty);
+        }
+    });
+    function addToCart(rowId, qty){
+        $.ajax({
+            url: '{{ route('client.updateCart') }}',
+            type: 'POST',
+            data: {
+                rowId: rowId,
+                qty: qty
+            },
+            dataType: 'json',
+            success : function(response) {
+                if (response.status == true){
+                    window.location.href = "{{ route('client.cart') }}"
+                }
+                else {
+
+                }
+            },
+        });
+    }
+
+    function deleteItemCart(rowId){
+        $.ajax({
+            url: '{{ route('client.deleteItemCart') }}',
+            type: 'POST',
+            data: {
+                rowId: rowId,
+            },
+            dataType: 'json',
+            success : function(response) {
+                if (response.status == true){
+                    window.location.href = "{{ route('client.cart') }}"
+                    toastr.success(response.message);
+                }
+                else {
+
+                }
+            },
+        });
+    }
+</script>
+@endsection
