@@ -171,6 +171,15 @@ class ProductController extends Controller
 
     public function getProducts(Request $request)
     {
-
+        $tempProduct = [];
+        if ($request->term != ''){
+            $products = $this->product->where('name', 'like', '%'.$request->term.'%')->get();
+            if ($products != null){
+                foreach ($products as $product){
+                    $tempProduct[] = array('id' => $product->id, 'name' => $product->name);
+                }
+            }
+        }
+        print_r($tempProduct);
     }
 }

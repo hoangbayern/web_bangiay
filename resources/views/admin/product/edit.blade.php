@@ -126,8 +126,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="related_products">Related product</label>
-                                    <select name="related_products" class="related-product" id="related_products"
-                                            data-placeholder="" style="width: 100%;">
+                                    <select class="related-product-new w-100" name="related_products" id="related_products">
 
                                     </select>
                                 </div>
@@ -269,22 +268,6 @@
                 });
             }
         }
-
-        $('.related-product').select2({
-            ajax: {
-                url: '{{ route('product.getProducts') }}',
-                dataType: 'json',
-                tags: true,
-                multiple: true,
-                minimumInputLength: 3,
-                processResults: function (data) {
-                    return {
-                        results: data.tags
-                    };
-                }
-            }
-        });
-
 
     </script>
 @endpush
