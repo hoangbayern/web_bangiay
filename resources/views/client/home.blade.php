@@ -145,8 +145,8 @@
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
-                                            <i class="fa fa-shopping-cart"></i> Add To Cart
+                                        <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
+                                            <i class="fa fa-shopping-cart"></i> Buy Now
                                         </a>
                                     </div>
                                 </div>
@@ -190,8 +190,8 @@
                                     <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="#">
-                                            <i class="fa fa-shopping-cart"></i> Add To Cart
+                                        <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
+                                            <i class="fa fa-shopping-cart"></i> Buy Now
                                         </a>
                                     </div>
                                 </div>

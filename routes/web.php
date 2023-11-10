@@ -6,6 +6,7 @@ foreach (File::allFiles(__DIR__ ) as $route_file) {
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
 
 /*
@@ -26,6 +27,8 @@ Route::get('/admin', function () {
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('client.shop');
 Route::get('/product/{productName}', [ShopController::class, 'product'])->name('client.product');
+Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
+Route::post('/addCart', [CartController::class, 'addCart'])->name('client.addCart');
 
 Auth::routes();
 

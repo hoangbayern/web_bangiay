@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Shoes Store</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
 
@@ -36,6 +37,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/video-js.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/style.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('client-assets/css/ion.rangeSlider.min.css') }}" />
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -165,6 +168,8 @@
 <script src="{{ asset('client-assets/js/lazyload.17.6.0.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/slick.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/ion.rangeSlider.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('assets/plugins/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('client-assets/js/custom.js') }}"></script>
 
 <script>
@@ -180,6 +185,19 @@
             navbar.classList.remove("sticky");
         }
     }
+    $.ajaxSetup({
+        headers: {
+            "X-CSRF-TOKEN": $("meta[name=\"csrf-token\"]").attr("content")
+        }
+    });
+
+    @error('warning')
+    toastr.warning('{{ $message }}');
+    @enderror
+
+    @error('success')
+    toastr.success('{{ $message }}');
+    @enderror
 </script>
 @yield('customJs')
 </body>

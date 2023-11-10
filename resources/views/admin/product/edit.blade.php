@@ -126,8 +126,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="related_products">Related product</label>
-                                    <select class="related-product-new w-100" name="related_products" id="related_products">
-
+                                    <select class="related-product w-100" multiple name="related_products[]" id="related_products">
+                                        @if(!empty($data['related_products']))
+                                            @foreach($data['related_products'] as $related_product)
+                                                <option value="{{ $related_product->id }}" selected>
+                                                    {{ $related_product->name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>
