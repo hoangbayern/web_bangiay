@@ -12,6 +12,32 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(Request $request): ?string
     {
-        return $request->expectsJson() ? null : route('login');
+        if ($request->expectsJson()) {
+            return null;
+        }
+
+        $guard = $this->authenticateGuard();
+
+        switch ($guard) {
+            case 'admin':
+                return route('admin.login');
+            case 'web':
+                return route('client.login');
+            default:
+                return route('login'); // Default fallback route
+        }
+    }
+
+    protected function authenticateGuard(): string
+    {
+        $guards = array_keys(config('auth.guards'));
+
+        foreach ($guards as $guard) {
+            if ($this->auth->guard($guard)->check()) {
+                return $guard;
+            }
+        }
+
+        return 'web'; // Default fallback guard
     }
 }
