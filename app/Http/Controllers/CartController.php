@@ -8,6 +8,7 @@ use App\Models\Size;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -111,5 +112,19 @@ class CartController extends Controller
            'status' => $status,
            'message' => $message,
         ]);
+    }
+
+    public function checkout()
+    {
+        if (Cart::count() == 0){
+            return redirect()->route('client.cart');
+        }
+        if (Auth::check() == false){
+            if (!session()->has('url.intended')){
+                session(['url.intended' => url()->current()]);
+            }
+            return redirect()->route('client.login');
+        }
+        return view('client.checkout');
     }
 }

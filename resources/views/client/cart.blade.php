@@ -50,7 +50,7 @@
                                                 <h2>{{$item->name}}</h2>
                                             </div>
                                         </td>
-                                        <td>{{number_format($item->price)}}</td>
+                                        <td>{{number_format($item->price)}}₫</td>
                                         <td>
                                             @if(isset($item->options->size['name']))
                                                 {{$item->options->size['name']}}
@@ -77,7 +77,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            {{ number_format($item->price * $item->qty) }}
+                                            {{number_format($item->price * $item->qty)}}₫
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-danger" onclick="deleteItemCart('{{$item->rowId}}');"><i class="fa fa-times"></i></button>
@@ -113,7 +113,7 @@
                                 <div>{{ number_format($total, 0, ',', ',') }}₫</div>
                             </div>
                             <div class="pt-5">
-                                <a href="login.php" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                                <a href="{{route('client.checkout')}}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
                             </div>
                             <div class="pt-3">
                                 <a href="{{ route('client.shop') }}" class="btn-dark btn btn-block w-100">Buy more products</a>
