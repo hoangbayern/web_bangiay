@@ -38,6 +38,7 @@ class AdminLoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
+//        dd($request);
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
 

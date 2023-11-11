@@ -16,16 +16,17 @@ class User extends Authenticatable
 
     const ACTIVE = 1;
 
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'email',
         'password',
         'status',
-        'token',
     ];
 
     /**
@@ -49,12 +50,12 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function setPasswordAttribute($value)
-    {
-        if ($value) {
-            $this->attributes['password'] = bcrypt($value);
-        }
-    }
+//    public function setPasswordAttribute($value)
+//    {
+//        if ($value) {
+//            $this->attributes['password'] = bcrypt($value);
+//        }
+//    }
 
     public function reviews()
     {

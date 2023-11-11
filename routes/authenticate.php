@@ -10,7 +10,7 @@ Route::prefix('admin')->group(function (){
             Route::post('/login', 'login')->name('postLogin');
             Route::get('/register', 'showRegisterForm')->name('register');
             Route::post('/register', 'register')->name('postRegister');
-            Route::get('/logout', 'logout')->name('logout');
+            Route::get('/logout', 'logout')->name('logout')->middleware('auth:admin');
             Route::get('/reset', 'showResetPasswordForm')->name('resetPassword');
         });
     });

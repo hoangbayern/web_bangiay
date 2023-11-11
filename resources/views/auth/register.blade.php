@@ -1,77 +1,58 @@
-@extends('layouts.app')
+@extends('client.layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+    <section class="section-5 pt-3 pb-3 mb-3 bg-white">
+        <div class="container">
+            <div class="light-font">
+                <ol class="breadcrumb primary-color mb-0">
+                    <li class="breadcrumb-item"><a class="white-text" href="{{route('client.home')}}">Home</a></li>
+                    <li class="breadcrumb-item">Register</li>
+                </ol>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+    <section class=" section-10">
+        <div class="container">
+            <div class="login-form">
+                <form action="{{route('client.postRegisterClient')}}" method="post">
+                    @csrf
+                    @method('POST')
+                    <h4 class="modal-title">Register Now</h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Name" id="name" name="name">
+                    </div>
+                    @error('name')
+                    <span class="input-group mb-3" style="margin-top: -12px; color: red">{{ $message }}</span>
+                    @enderror
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Email" id="email" name="email">
+                    </div>
+                    @error('email')
+                    <span class="input-group mb-3" style="margin-top: -12px; color: red">{{ $message }}</span>
+                    @enderror
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" id="password" name="password">
+                    </div>
+                    @error('password')
+                    <span class="input-group mb-3" style="margin-top: -12px; color: red">{{ $message }}</span>
+                    @enderror
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" id="confirm_password">
+                    </div>
+                    @error('confirm_password')
+                    <span class="input-group mb-3" style="margin-top: -12px; color: red">{{ $message }}</span>
+                    @enderror
+                    <div class="form-group small">
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-block btn-lg" value="Register">Register</button>
+                </form>
+                @error('errorRegister')
+                <span class="input-group mt-3 mb-3" style="color: red">{{ $message }}</span>
+                @enderror
+                <div class="text-center small pt-3">Already have an account? <a href="{{route('client.login')}}">Login Now</a></div>
+            </div>
+        </div>
+    </section>
 @endsection
