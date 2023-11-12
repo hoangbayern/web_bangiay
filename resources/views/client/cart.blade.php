@@ -97,7 +97,7 @@
                         <div class="card-body">
                             @php
                                 $subtotal = floatval(str_replace(',', '', \Gloudemans\Shoppingcart\Facades\Cart::subtotal()));
-                                $shipping = (\Gloudemans\Shoppingcart\Facades\Cart::count() > 0) ? 20000 : 0; // Giả sử phí vận chuyển là 20000₫
+                                $shipping = (\Gloudemans\Shoppingcart\Facades\Cart::count() > 0) ? 30000 : 0; // Giả sử phí vận chuyển là 20000₫
                                 $total = $subtotal + $shipping;
                             @endphp
                             <div class="d-flex justify-content-between pb-2">
