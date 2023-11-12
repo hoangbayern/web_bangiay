@@ -23,15 +23,12 @@ class CategoryFactory extends Factory
         return [
             'name' => $this->faker->unique()->randomElements(
                 [
-                    'Lifestyle',
-                    'Running',
-                    'Gym & Training',
-                    'Soccer',
-                    'Tennis',
-                    'Basketball',
-                    'Football',
-                    'Skateboarding',
-                    'Sandals',
+                    'ADIDAS',
+                    'MLB',
+                    'CONVERSE',
+                    'GUCCI',
+                    'NIKE',
+                    'SOCCER',
                 ]
             )[0],
             'description' => $this->faker->text($maxNbChars = 200),

@@ -51,6 +51,9 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            if (session()->has('url.intended')){
+                return redirect(session()->get('url.intended'));
+            }
             return redirect()->route('client.profile')->withErrors([
                 'success' => 'Logged in successfully.'
             ]);

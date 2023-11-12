@@ -32,6 +32,9 @@ Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 Route::post('/addCart', [CartController::class, 'addCart'])->name('client.addCart');
 Route::post('/updateCart', [CartController::class, 'updateCart'])->name('client.updateCart');
 Route::post('/deleteCart', [CartController::class, 'deleteItemCart'])->name('client.deleteItemCart');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('client.checkout');
+Route::post('/process-checkout', [CartController::class, 'processCheckout'])->name('client.processCheckout');
+Route::get('/thanks/{orderId}', [CartController::class, 'thankOrder'])->name('client.thanks');
 
 //Authenticate Client
 Route::group(['middleware' => 'guest'], function (){

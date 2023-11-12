@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Color;
+use App\Models\CustomerAddresses;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Size;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -110,6 +115,110 @@ class CartController extends Controller
         return response()->json([
            'status' => $status,
            'message' => $message,
+        ]);
+    }
+
+    public function checkout()
+    {
+        if (Cart::count() == 0){
+            return redirect()->route('client.cart');
+        }
+        if (Auth::check() == false){
+            if (!session()->has('url.intended')){
+                session(['url.intended' => url()->current()]);
+            }
+            return redirect()->route('client.login');
+        }
+        return view('client.checkout');
+    }
+
+    public function processCheckout(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+           'full_name' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email',
+            'province' => 'required',
+            'district' => 'required',
+            'ward' => 'required',
+            'address' => 'required',
+        ]);
+        if ($validator->fails()){
+            return response()->json([
+               'message' => 'Fix Validate Error',
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $user = Auth::user();
+        CustomerAddresses::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+             'user_id' => $user->id,
+             'full_name' => $request->full_name,
+             'phone' => $request->phone,
+             'email' => $request->email,
+             'province' => $request->province_name,
+             'district' => $request->district_name,
+             'ward' => $request->ward_name,
+             'address' => $request->address,
+             'notes' => $request->notes,
+            ]
+        );
+
+        //Insert data in orders table
+        $subTotal = floatval(str_replace(',', '', Cart::subtotal()));
+        $shipping = (Cart::count() > 0) ? 30000 : 0;
+        $grandTotal = $subTotal + $shipping;
+
+        $order = new Order();
+        $order->subtotal = $subTotal;
+        $order->shipping = $shipping;
+        $order->grand_total = $grandTotal;
+        $order->user_id = $user->id;
+        $order->full_name = $request->full_name;
+        $order->phone = $request->phone;
+        $order->email = $request->email;
+        $order->province = $request->province_name;
+        $order->district = $request->district_name;
+        $order->ward = $request->ward_name;
+        $order->address = $request->address;
+        $order->notes = $request->notes;
+        $order->save();
+
+//        Insert data in item order table
+        foreach (Cart::content() as $item)
+        {
+            $orderItem = new OrderItem();
+            $orderItem->product_id = $item->id;
+            $orderItem->order_id = $order->id;
+            $orderItem->name = $item->name;
+            if(isset($item->options->size['name'])){
+                $orderItem->size = $item->options->size['name'];
+            }
+            if(isset($item->options->color['name'])){
+                $orderItem->color = $item->options->color['name'];
+            }
+            $orderItem->qty = $item->qty;
+            $orderItem->price = $item->price;
+            $orderItem->total = $item->price * $item->qty;
+            $orderItem->save();
+        }
+
+        Cart::destroy();
+
+        return response()->json([
+           'message' => 'Order successfully.',
+            'status' => true,
+            'orderId' => $order->id,
+        ]);
+    }
+
+    public function thankOrder($orderId)
+    {
+        return view('client.thanks', [
+            'orderId' => $orderId
         ]);
     }
 }
