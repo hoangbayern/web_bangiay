@@ -60,7 +60,11 @@
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-                <a href="account.php" class="nav-link text-dark">My Account</a>
+                @if(\Illuminate\Support\Facades\Auth::check())
+                    <a href="{{route('client.profile')}}" class="nav-link text-dark">My Account</a>
+                @else
+                    <a href="{{route('client.login')}}" class="nav-link text-dark">Login/Register</a>
+                @endif
                 <form action="">
                     <div class="input-group">
                         <input type="text" placeholder="Search For Products" class="form-control" aria-label="Amount (to the nearest dollar)">
@@ -101,7 +105,7 @@
             </div>
             <div class="right-nav py-0">
                 <a href="{{route('client.cart')}}" class="ml-3 d-flex pt-2">
-                    <i class="fas fa-shopping-bag text-primary"></i>
+                    <i class="fas fa-shopping-cart text-primary" style="font-size: 24px;"></i>
                 </a>
             </div>
         </nav>
@@ -144,7 +148,7 @@
                     <ul>
                         <li><a href="{{route('client.login')}}" title="Sell">Login</a></li>
                         <li><a href="{{route('client.register')}}" title="Advertise">Register</a></li>
-                        <li><a href="#" title="Contact Us">My Orders</a></li>
+                        <li><a href="{{route('client.myOrders')}}" title="Contact Us">My Orders</a></li>
                     </ul>
                 </div>
             </div>

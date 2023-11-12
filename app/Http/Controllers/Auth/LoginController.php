@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Authenticate\LoginRequest;
 use App\Http\Requests\Authenticate\RegisterRequest;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -91,6 +93,25 @@ class LoginController extends Controller
         return redirect()->route('client.login')->withErrors([
             'success' => 'The account has been logged out.',
         ]);
+    }
+
+    public function myOrders()
+    {
+        $user = Auth::user();
+        $myOrders = Order::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $data['myOrders'] = $myOrders;
+        return view('client.account.my-orders', $data);
+    }
+
+    public function myOrderDetail($orderId)
+    {
+        $data = [];
+        $user = Auth::user();
+        $order = Order::where('user_id', $user->id)->where('id', $orderId)->first();
+        $orderItems = OrderItem::where('order_id', $orderId)->get();
+        $data['order'] = $order;
+        $data['orderItems'] = $orderItems;
+        return view('client.account.order-detail', $data);
     }
 
 }
