@@ -65,9 +65,9 @@
                 @else
                     <a href="{{route('client.login')}}" class="nav-link text-dark">Login/Register</a>
                 @endif
-                <form action="">
+                <form action="{{route('client.shop')}}" method="get">
                     <div class="input-group">
-                        <input type="text" placeholder="Search For Products" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        <input type="text" placeholder="Search For Products" class="form-control" name="search" id="search">
                         <span class="input-group-text">
 							<i class="fa fa-search"></i>
 					  	</span>
