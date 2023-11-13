@@ -36,7 +36,7 @@
                                     <div class="col-sm-7 invoice-col">
                                         <h1 class="h5 mb-3">Shipping Address</h1>
                                         <address>
-                                            FullName: <strong>{{ $order->full_name }}</strong><br>
+                                            Customer: <strong>{{ $order->full_name }}</strong><br>
                                             Address: <strong>{{ $order->address }} - {{ $order->ward }} - {{ $order->district }} - {{ $order->province }}</strong><br>
                                             Phone: <strong>{{ $order->phone }}</strong><br>
                                             Email: <strong>{{ $order->email }}</strong>
@@ -127,18 +127,20 @@
                             </form>
                         </div>
                         <div class="card">
-                            <div class="card-body">
-                                <h2 class="h4 mb-3">Send Inovice Email</h2>
-                                <div class="mb-3">
-                                    <select name="status" id="status" class="form-control">
-                                        <option value="">Customer</option>
-                                        <option value="">Admin</option>
-                                    </select>
+                            <form action="" method="post" name="sendInvoiceEmail" id="sendInvoiceEmail">
+                                <div class="card-body">
+                                    <h2 class="h4 mb-3">Send Invoice Email</h2>
+                                    <div class="mb-3">
+                                        <select name="receiver" id="receiver" class="form-control">
+                                            <option value="customer">Customer</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button class="btn btn-primary">Send</button>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <button class="btn btn-primary">Send</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -164,6 +166,21 @@
                    }
                }
            })
+        });
+
+        $("#sendInvoiceEmail").submit(function (e){
+           e.preventDefault();
+           $.ajax({
+              url: '{{route('order.sendInvoiceEmail', $order->id)}}',
+              type: 'POST',
+              data: $(this).serializeArray(),
+              dataType: 'json',
+              success: function (response){
+                  if (response.status == true){
+                      window.location.href = '{{route('order.detail', $order->id)}}'
+                  }
+              }
+           });
         });
     </script>
 @endpush

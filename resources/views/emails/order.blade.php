@@ -59,8 +59,13 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="success">Thank You for Your Order!</h1>
-    <h2>Your order (ID: #SS{{ $mailData['order']->id }})</h2>
+    @if($mailData['typeUser'] == 'customer')
+        <h1 class="success">Thank You for Your Order!</h1>
+        <h2>Your order (ID: #SS{{ $mailData['order']->id }})</h2>
+    @else
+        <h1 class="success">You have a New Order!</h1>
+        <h2>New order (ID: #SS{{ $mailData['order']->id }})</h2>
+    @endif
 
     <h2>Shipping Address:</h2>
     <address>

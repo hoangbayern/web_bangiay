@@ -11,4 +11,6 @@ Route::prefix('admin/orders')->controller(OrderController::class)->as('order.')-
         ->middleware('auth:admin');
     Route::post('/change-status/{id}', 'changeOrderStatus')->name('changeOrderStatus')
         ->middleware('auth:admin');
+    Route::post('/invoice-email/{id}', 'sendInvoiceEmail')->name('sendInvoiceEmail')
+        ->middleware('auth:admin');
 });
