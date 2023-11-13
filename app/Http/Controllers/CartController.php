@@ -207,6 +207,8 @@ class CartController extends Controller
         }
 
         Cart::destroy();
+        //SEND EMAIL CLIENT
+        orderEmail($order->id);
 
         return response()->json([
            'message' => 'Order successfully.',
