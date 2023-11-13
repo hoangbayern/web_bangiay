@@ -35,6 +35,9 @@ Route::post('/deleteCart', [CartController::class, 'deleteItemCart'])->name('cli
 Route::get('/checkout', [CartController::class, 'checkout'])->name('client.checkout');
 Route::post('/process-checkout', [CartController::class, 'processCheckout'])->name('client.processCheckout');
 Route::get('/thanks/{orderId}', [CartController::class, 'thankOrder'])->name('client.thanks');
+Route::post('/add-wishlist', [ClientController::class, 'addWishList'])->name('client.addWishList');
+Route::get('/wishlist', [LoginController::class, 'wishlist'])->name('client.wishlist');
+Route::post('/remove-wishlist', [LoginController::class, 'removeItemWishlist'])->name('client.removeItemWishlist');
 
 //Authenticate Client
 Route::group(['middleware' => 'guest'], function (){
