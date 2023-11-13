@@ -7,6 +7,7 @@ use App\Http\Requests\Authenticate\LoginRequest;
 use App\Http\Requests\Authenticate\RegisterRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Profile;
 use App\Models\User;
 use App\Models\Wishlist;
 use App\Providers\RouteServiceProvider;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -86,7 +88,46 @@ class LoginController extends Controller
 
     public function profile()
     {
-        return view('client.account.profile');
+        $user = $this->user->where('id', Auth::user()->id)->with('profile')->first();
+        return view('client.account.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $validator = Validator::make($request->all(),[
+           'name' => 'required',
+           'email' => 'required|email|unique:users,email,'.$userId.',id',
+            'phone' => 'required',
+        ]);
+        if ($validator->passes()){
+            $user = User::findOrFail($userId);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            Profile::updateOrCreate(
+                ['user_id' => $userId],
+                [
+                    'phone' => $request->phone,
+                    'gender' => $request->gender,
+                    'birthday' => $request->birthday,
+                    'address' => $request->address,
+                ]
+            );
+
+            session()->flash('success', 'Updated Profile Successfully');
+            return response()->json([
+               'status' => true,
+               'message' => 'Updated Profile Successfully',
+            ]);
+        }
+        else {
+            return response()->json([
+               'status' => false,
+               'errors' => $validator->errors(),
+            ]);
+        }
     }
 
     public function logoutClient()

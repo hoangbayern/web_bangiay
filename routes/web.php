@@ -49,6 +49,7 @@ Route::group(['middleware' => 'guest'], function (){
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/logoutClient', [LoginController::class, 'logoutClient'])->name('client.logoutClient');
     Route::get('/profile', [LoginController::class, 'profile'])->name('client.profile');
+    Route::post('/profile', [LoginController::class, 'updateProfile'])->name('client.updateProfile');
     Route::get('/my-orders', [LoginController::class, 'myOrders'])->name('client.myOrders');
     Route::get('/my-orderDetail/{orderId}', [LoginController::class, 'myOrderDetail'])->name('client.myOrderDetail');
 });
