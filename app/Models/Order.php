@@ -18,6 +18,11 @@ class Order extends Model
         return $this->belongsToMany(Product::class)->withPivot('qty', 'price', 'total', 'color', 'size')->withTimestamps();
     }
 
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function scopeOrWithNameOrEmailOrId($query, $searchTerm)
     {
         return $searchTerm ? $query->orWhere('full_name', 'LIKE', "%$searchTerm%")

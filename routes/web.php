@@ -50,6 +50,10 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/my-orderDetail/{orderId}', [LoginController::class, 'myOrderDetail'])->name('client.myOrderDetail');
 });
 
+//Route::get('/test', function (){
+//   orderEmail(5);
+//});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
