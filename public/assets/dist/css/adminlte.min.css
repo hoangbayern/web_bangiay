@@ -49123,3 +49123,8 @@ a.text-muted:hover {
 }
 
 /*# sourceMappingURL=adminlte.min.css.map */
+
+button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled){
+    float: right !important;
+}
+

@@ -61,6 +61,8 @@
                                                     <span class="badge bg-success">{{ $order->status }}</span>
                                                 @elseif($order->status == 'completed')
                                                     <span class="badge bg-secondary">{{ $order->status }}</span>
+                                                @elseif($order->status == 'cancelled')
+                                                    <span class="badge bg-danger">{{ $order->status }}</span>
                                                 @endif
                                             </p>
                                         </div>

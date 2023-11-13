@@ -51,6 +51,8 @@
                                                             <span class="badge bg-success">{{ $item->status }}</span>
                                                         @elseif($item->status == 'completed')
                                                             <span class="badge bg-secondary">{{ $item->status }}</span>
+                                                        @elseif($item->status == 'cancelled')
+                                                            <span class="badge bg-danger">{{ $item->status }}</span>
                                                         @endif
                                                     </td>
                                                     <td>{{number_format($item->grand_total)}}₫</td>

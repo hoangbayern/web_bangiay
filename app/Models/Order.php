@@ -17,4 +17,19 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class)->withPivot('qty', 'price', 'total', 'color', 'size')->withTimestamps();
     }
+
+    public function scopeOrWithNameOrEmailOrId($query, $searchTerm)
+    {
+        return $searchTerm ? $query->orWhere('full_name', 'LIKE', "%$searchTerm%")
+            ->orWhere('email', 'LIKE', "%$searchTerm%")
+            ->orWhere('id', 'LIKE', "%$searchTerm%") : $query;
+    }
+
+    public function search($searchTerm)
+    {
+        return Order::orWithNameOrEmailOrId($searchTerm)
+            ->latest('id')->paginate(10)
+            ->withQueryString();
+    }
+
 }
