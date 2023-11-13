@@ -8,8 +8,10 @@ use App\Http\Requests\Authenticate\RegisterRequest;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
+use App\Models\Wishlist;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -112,6 +114,26 @@ class LoginController extends Controller
         $data['order'] = $order;
         $data['orderItems'] = $orderItems;
         return view('client.account.order-detail', $data);
+    }
+
+    public function wishlist()
+    {
+        $data = [];
+        $wishlists = Wishlist::where('user_id', Auth::user()->id)->get();
+        $data['wishlists'] = $wishlists;
+        return view('client.account.wishlist', $data);
+    }
+
+    public function removeItemWishlist(Request $request)
+    {
+        $removeItem = Wishlist::where('id', $request->id)->where('user_id', Auth::user()->id)->first();
+        $removeItem->delete();
+
+        session()->flash('success', 'Deleted Item Wishlist Success');
+        return response()->json([
+           'status' => true,
+           'message' => 'Deleted Item Wishlist Success',
+        ]);
     }
 
 }

@@ -142,7 +142,7 @@
                                             <img class="card-img-top" src="/uploads/temp/default_product.png" alt="imgProduct">
                                         @endif
                                     </a>
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="addWishList({{$product->id}})" href="javascript:void(0);"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
@@ -187,7 +187,7 @@
                                             <img class="card-img-top" src="/uploads/temp/default_product.png" alt="imgProduct">
                                         @endif
                                     </a>
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="addWishList({{$product->id}})" href="javascript:void(0);"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
                                         <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">

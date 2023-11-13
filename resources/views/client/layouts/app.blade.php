@@ -202,6 +202,23 @@
     @error('success')
     toastr.success('{{ $message }}');
     @enderror
+
+    function addWishList(id){
+        $.ajax({
+           url: '{{route('client.addWishList')}}',
+           type: 'POST',
+           data: {id:id},
+           dataType: 'json',
+           success: function (response){
+               if (response.status == true){
+                   toastr.success(response.message);
+               }
+               else {
+                   window.location.href = '{{route('client.login')}}'
+               }
+           }
+        });
+    }
 </script>
 @yield('customJs')
 </body>
