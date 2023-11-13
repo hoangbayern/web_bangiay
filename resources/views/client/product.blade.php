@@ -79,7 +79,15 @@
                             </select>
                         </div>
 
-                        <a href="javascript:void(0);" onclick="addToCart({{$product->id}})" class="btn btn-dark mt-3"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                        @if($product->track_qty == 'Yes')
+                            @if($product->qty > 0)
+                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}})" class="btn btn-dark mt-3"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                            @else
+                                <a href="#" class="btn btn-dark mt-3 disabled" style="pointer-events: none; opacity: 0.5;"><i class="fas fa-shopping-cart"></i> &nbsp;Out Of Stock</a>
+                            @endif
+                        @else
+                            <a href="javascript:void(0);" onclick="addToCart({{$product->id}})" class="btn btn-dark mt-3"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                        @endif
                     </div>
                 </div>
 
@@ -128,12 +136,24 @@
                                             <img class="card-img-top" src="/uploads/temp/default_product.png" alt="imgProduct">
                                         @endif
                                     </a>
-                                    <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                    <a class="whishlist" onclick="addWishList({{$related_product->id}})" href="javascript:void(0);"><i class="far fa-heart"></i></a>
 
                                     <div class="product-action">
-                                        <a class="btn btn-dark" href="{{route('client.product', $related_product->name)}}">
-                                            <i class="fa fa-shopping-cart"></i> Buy Now
-                                        </a>
+                                        @if($related_product->track_qty == 'Yes')
+                                            @if($related_product->qty > 0)
+                                                <a class="btn btn-dark" href="{{route('client.product', $related_product->name)}}">
+                                                    <i class="fa fa-shopping-cart"></i> Buy Now
+                                                </a>
+                                            @else
+                                                <a class="btn btn-dark" href="{{route('client.product', $related_product->name)}}">
+                                                    <i class="fa fa-shopping-cart"></i> Out Of Stock
+                                                </a>
+                                            @endif
+                                        @else
+                                            <a class="btn btn-dark" href="{{route('client.product', $related_product->name)}}">
+                                                <i class="fa fa-shopping-cart"></i> Buy Now
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-body text-center mt-3">

@@ -150,9 +150,21 @@
                                             <a class="whishlist" onclick="addWishList({{$product->id}})" href="javascript:void(0);"><i class="far fa-heart"></i></a>
 
                                             <div class="product-action">
-                                                <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
-                                                    <i class="fa fa-shopping-cart"></i> Buy Now
-                                                </a>
+                                                @if($product->track_qty == 'Yes')
+                                                    @if($product->qty > 0)
+                                                        <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
+                                                            <i class="fa fa-shopping-cart"></i> Buy Now
+                                                        </a>
+                                                    @else
+                                                        <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
+                                                            <i class="fa fa-shopping-cart"></i> Out Of Stock
+                                                        </a>
+                                                    @endif
+                                                @else
+                                                    <a class="btn btn-dark" href="{{route('client.product', $product->name)}}">
+                                                        <i class="fa fa-shopping-cart"></i> Buy Now
+                                                    </a>
+                                                @endif
                                             </div>
                                         </div>
                                         <div class="card-body text-center mt-3">
@@ -237,6 +249,11 @@
         url += '&sort=' + $("#sort").val();
 
         url += '&gender=' + $("#gender").val();
+
+        var keyword = $("#search").val();
+        if (keyword.length > 0){
+            url += '&search=' + keyword;
+        }
 
         window.location.href = url;
     }
