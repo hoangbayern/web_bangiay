@@ -58,8 +58,8 @@
                                 </div>
                             @endforeach
                             @else
-                                <div class="text-center">
-                                    <p class="fs-5">Your wishlist is empty.</p>
+                                <div class="alert alert-info text-center" role="alert" style="font-size: 18px">
+                                    Your wishlist is empty.
                                 </div>
                             @endif
                         </div>

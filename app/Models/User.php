@@ -67,6 +67,20 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function scopeOrWithNameOrEmailOrId($query, $searchTerm)
+    {
+        return $searchTerm ? $query->orWhere('name', 'LIKE', "%$searchTerm%")
+            ->orWhere('email', 'LIKE', "%$searchTerm%")
+            ->orWhere('id', 'LIKE', "%$searchTerm%") : $query;
+    }
+
+    public function search($searchTerm)
+    {
+        return User::orWithNameOrEmailOrId($searchTerm)
+            ->latest('id')->paginate(10)
+            ->withQueryString();
+    }
+
     /**
      * The attributes that should be cast.
      *

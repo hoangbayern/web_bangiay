@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth'], function (){
     Route::post('/profile', [LoginController::class, 'updateProfile'])->name('client.updateProfile');
     Route::get('/my-orders', [LoginController::class, 'myOrders'])->name('client.myOrders');
     Route::get('/my-orderDetail/{orderId}', [LoginController::class, 'myOrderDetail'])->name('client.myOrderDetail');
+    Route::get('/change-password', [LoginController::class, 'changePassword'])->name('client.changePassword');
+    Route::post('/change-password', [LoginController::class, 'updatePassword'])->name('client.updatePassword');
 });
 
 //Route::get('/test', function (){
