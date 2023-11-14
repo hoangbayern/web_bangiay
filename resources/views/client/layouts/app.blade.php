@@ -203,6 +203,10 @@
     toastr.success('{{ $message }}');
     @enderror
 
+    @error('error')
+    toastr.error('{{ $message }}');
+    @enderror
+
     function addWishList(id){
         $.ajax({
            url: '{{route('client.addWishList')}}',

@@ -46,26 +46,31 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="phone">Phone</label>
-                                        <input type="text" value="{{$user->profile->phone}}" name="phone" id="phone" placeholder="Enter Your Phone" class="form-control">
+                                        <input type="text" value="{{ optional($user->profile)->phone }}" name="phone" id="phone" placeholder="Enter Your Phone" class="form-control">
                                         <p></p>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="phone">Gender</label>
                                         <select name="gender" id="gender" class="form-control">
-                                            <option {{($user->profile->gender === 1) ? 'selected' : ''}} value="1">Male</option>
-                                            <option {{($user->profile->gender === 0) ? 'selected' : ''}} value="0">Female</option>
+                                            @if($user->profile)
+                                                <option {{($user->profile->gender === 1) ? 'selected' : ''}} value="1">Male</option>
+                                                <option {{($user->profile->gender === 0) ? 'selected' : ''}} value="0">Female</option>
+                                            @else
+                                                <option selected value="1">Male</option>
+                                                <option value="0">Female</option>
+                                            @endif
                                         </select>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="birthday">Birthday</label>
-                                        <input type="date" value="{{$user->profile->birthday}}" name="birthday" id="birthday" class="form-control">
+                                        <input type="date" value="{{ optional($user->profile)->birthday }}" name="birthday" id="birthday" class="form-control">
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="phone">Address</label>
-                                        <textarea name="address" id="address" class="form-control" cols="30" rows="5" placeholder="Enter Your Address">{{$user->profile->address}}</textarea>
+                                        <textarea name="address" id="address" class="form-control" cols="30" rows="5" placeholder="Enter Your Address">{{ optional($user->profile)->address }}</textarea>
                                     </div>
 
                                     <div class="d-flex">

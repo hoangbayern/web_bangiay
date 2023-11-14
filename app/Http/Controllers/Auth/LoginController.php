@@ -56,12 +56,21 @@ class LoginController extends Controller
     public function loginClient(LoginRequest $request){
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            if (session()->has('url.intended')){
-                return redirect(session()->get('url.intended'));
+        $user = User::where('email', $credentials['email'])->first();
+
+        if ($user && $user->status === User::ACTIVE) {
+            if (Auth::attempt($credentials)) {
+                if (session()->has('url.intended')){
+                    return redirect(session()->get('url.intended'));
+                }
+                return redirect()->route('client.profile')->withErrors([
+                    'success' => 'Logged in successfully.'
+                ]);
             }
-            return redirect()->route('client.profile')->withErrors([
-                'success' => 'Logged in successfully.'
+        }
+        else if ($user && $user->status === User::INACTIVE){
+            return redirect()->route('client.login')->withErrors([
+                'error' => 'Your account is blocked. Please contact support for assistance.'
             ]);
         }
         return redirect()->route('client.login')->withErrors([
@@ -175,6 +184,47 @@ class LoginController extends Controller
            'status' => true,
            'message' => 'Deleted Item Wishlist Success',
         ]);
+    }
+
+    public function changePassword()
+    {
+        return view('client.account.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+           'old_password' => 'required',
+           'new_password' => 'required|min:3|max:100',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        if ($validator->passes()){
+            $user = $this->user->findOrFail($userId);
+            $currentPassword = $user->password;
+            //Check old password
+            if(Hash::check($request->old_password, $currentPassword)){
+                $user->password = Hash::make($request->new_password);
+                $user->save();
+
+                session()->flash('success', 'Password Updated Successfully.');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Password Updated Successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'errors' => ['old_password' => ['The current password is incorrect.']],
+                ]);
+            }
+        }
+        else {
+            return response()->json([
+               'status' => false,
+               'errors' => $validator->errors(),
+            ]);
+        }
     }
 
 }
