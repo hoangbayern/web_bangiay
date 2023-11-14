@@ -9,6 +9,7 @@ use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AdminLoginController extends Controller
 {
@@ -81,6 +82,48 @@ class AdminLoginController extends Controller
         return redirect()->route('admin.login')->withErrors([
             'success' => 'The account has been logged out.',
         ]);
+    }
+
+    public function changePassword()
+    {
+        return view('auth.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $adminId = Auth::guard('admin')->user()->id;
+
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:3|max:100',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        if ($validator->passes()){
+            $admin = $this->admin->findOrFail($adminId);
+            $currentPassword = $admin->password;
+            //Check old password
+            if(Hash::check($request->old_password, $currentPassword)){
+                $admin->password = Hash::make($request->new_password);
+                $admin->save();
+
+                session()->flash('success', 'Password Updated Successfully.');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Password Updated Successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'errors' => ['old_password' => ['The current password is incorrect.']],
+                ]);
+            }
+        }
+        else {
+            return response()->json([
+               'status' => false,
+               'errors' => $validator->errors(),
+            ]);
+        }
     }
 
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,11 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::get('/admin', function () {
-    return view('admin-home');
-})->name('adminHome')->middleware('auth:admin');
+//Route::get('/admin', function () {
+//    return view('admin-home');
+//})->name('adminHome')->middleware('auth:admin');
+
+Route::get('/admin', [AdminController::class, 'homeAdmin'])->name('adminHome')->middleware('auth:admin');
 
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('client.shop');

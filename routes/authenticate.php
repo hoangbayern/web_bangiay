@@ -12,6 +12,8 @@ Route::prefix('admin')->group(function (){
             Route::post('/register', 'register')->name('postRegister');
             Route::get('/logout', 'logout')->name('logout')->middleware('auth:admin');
             Route::get('/reset', 'showResetPasswordForm')->name('resetPassword');
+            Route::get('/change-password', 'changePassword')->name('changePassword')->middleware('auth:admin');
+            Route::post('/change-password', 'updatePassword')->name('updatePassword')->middleware('auth:admin');
         });
     });
     Route::controller(AdminForgotPasswordController::class)->group(function (){

@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastr/toastr.min.css') }}">
+    <!-- ChartJs -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/chart.js/Chart.min.css') }}">
     <!-- Dropzone -->
     <link rel="stylesheet" href="{{ asset('assets/dist/css/dropzone.min.css') }}">
     <style>
@@ -93,6 +95,7 @@
 <script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/inputmask/jquery.inputmask.min.js') }}"></script>
 <!-- sweetalert2 -->
+<script src="{{ asset('assets/plugins/chart.js/Chart.min.js') }}"></script>
 {{--Dropzone--}}
 <script src="{{ asset('assets/dist/js/dropzone.min.js') }}"></script>
 {{--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
