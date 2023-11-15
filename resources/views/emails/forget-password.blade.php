@@ -9,6 +9,6 @@
 <body style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
 <h1 style="color: #3498db;">Reset Password</h1>
 <p style="color: #555; font-size: 16px;">Click the link below to reset your password:</p>
-<a href="{{route('admin.resetPassword', $token)}}" style="display: inline-block; background-color: #3498db; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Reset Password</a>
+<a href="{{route('client.resetPassword', $token)}}" style="display: inline-block; background-color: #3498db; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px;">Reset Password</a>
 </body>
 </html>
