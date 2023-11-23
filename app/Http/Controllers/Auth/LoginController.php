@@ -60,9 +60,9 @@ class LoginController extends Controller
 
         if ($user && $user->status === User::ACTIVE) {
             if (Auth::attempt($credentials)) {
-                if (session()->has('url.intended')){
-                    return redirect(session()->get('url.intended'));
-                }
+//                if (session()->has('url.intended')){
+//                    return redirect(session()->get('url.intended'));
+//                }
                 return redirect()->route('client.profile')->withErrors([
                     'success' => 'Logged in successfully.'
                 ]);

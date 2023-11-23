@@ -32,7 +32,7 @@
                     <span class="input-group mb-3" style="margin-top: -12px; color: red">{{ $message }}</span>
                     @enderror
                     <div class="form-group small">
-                        <a href="#" class="forgot-link">Forgot Password?</a>
+                        <a href="{{route('client.forgetPassword')}}" class="forgot-link">Forgot Password?</a>
                     </div>
                     <button type="submit" class="btn btn-dark btn-block btn-lg" value="Login">Login</button>
                 </form>

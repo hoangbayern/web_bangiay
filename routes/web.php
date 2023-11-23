@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/change-password', [LoginController::class, 'changePassword'])->name('client.changePassword');
     Route::post('/change-password', [LoginController::class, 'updatePassword'])->name('client.updatePassword');
 });
+
+Route::get('/forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('client.forgetPassword');
+Route::post('/forget-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('client.sendResetLinkEmail');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('client.resetPassword');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPasswordPost'])->name('client.resetPasswordPost');
 
 //Route::get('/test', function (){
 //   orderEmail(5);
