@@ -32,6 +32,7 @@ Route::get('/admin', [AdminController::class, 'homeAdmin'])->name('adminHome')->
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/shop/{categorySlug?}', [ShopController::class, 'index'])->name('client.shop');
 Route::get('/product/{productName}', [ShopController::class, 'product'])->name('client.product');
+Route::post('/save-rating/{productId}', [ShopController::class, 'saveRating'])->name('client.saveRating');
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 Route::post('/addCart', [CartController::class, 'addCart'])->name('client.addCart');
 Route::post('/updateCart', [CartController::class, 'updateCart'])->name('client.updateCart');

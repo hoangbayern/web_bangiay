@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
+use App\Models\ProductRating;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -103,7 +105,14 @@ class ShopController extends Controller
     public function product($productName)
     {
         $data = [];
-        $product = Product::where('name', $productName)->with('product_images')->first();
+        $product = Product::where('name', $productName)
+                            ->withCount('product_ratings')
+                            ->withSum('product_ratings', 'rating')
+                            ->with(['product_images', 'product_ratings' => function ($query) {
+                                     $query->orderBy('id', 'DESC'); // Sắp xếp product_ratings theo id giảm dần
+                                 }])
+                            ->first();
+//        dd($product);
         if ($product == null){
             abort(404);
         }
@@ -115,5 +124,46 @@ class ShopController extends Controller
         $data['product'] = $product;
         $data['related_products'] = $related_products;
         return view('client.product', $data);
+    }
+
+    public function saveRating(Request $request, $productId)
+    {
+        $validator = Validator::make($request->all(), [
+           'username' => 'required',
+           'email' => 'required',
+           'comment' => 'required',
+           'rating' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json([
+               'status' => false,
+               'errors' => $validator->errors(),
+            ]);
+        }
+
+        $count = ProductRating::where('email', $request->email)->count();
+        if ($count > 0){
+            session()->flash('warning', 'You already rated this product.');
+            return response()->json([
+               'status' => true,
+            ]);
+        }
+
+            $productRating = new ProductRating();
+            $productRating->username = $request->username;
+            $productRating->email = $request->email;
+            $productRating->rating = $request->rating;
+            $productRating->comment = $request->comment;
+            $productRating->product_id = $productId;
+            $productRating->save();
+
+            session()->flash('success', 'Thanks for your rating.');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Rated created successfully',
+            'data' => $productRating,
+        ]);
     }
 }
