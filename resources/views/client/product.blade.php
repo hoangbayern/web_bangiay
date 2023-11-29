@@ -16,6 +16,22 @@
     <section class="section-7 pt-3 mb-3">
         <div class="container">
             <div class="row ">
+                @if(\Illuminate\Support\Facades\Session::has('success'))
+                    <div class="col-md-12">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {!! \Illuminate\Support\Facades\Session::get('success') !!}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                @endif
+                    @if(\Illuminate\Support\Facades\Session::has('warning'))
+                        <div class="col-md-12">
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {!! \Illuminate\Support\Facades\Session::get('warning') !!}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    @endif
                 <div class="col-md-5">
                     <div id="product-carousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner bg-light">
@@ -40,15 +56,33 @@
                 <div class="col-md-7">
                     <div class="bg-light right">
                         <h1>{{$product->name}}</h1>
+                        @php
+                            $avgRating = 0;
+                            if ($product->product_ratings_count > 0){
+                                $avgRating = $product->product_ratings_sum_rating / $product->product_ratings_count;
+                            }
+                              $formattedRating = number_format($avgRating, 1);
+                              $ratingPerAvg = ($avgRating * 100) / 5;
+                        @endphp
                         <div class="d-flex mb-3">
-                            <div class="text-primary mr-2">
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star"></small>
-                                <small class="fas fa-star-half-alt"></small>
-                                <small class="far fa-star"></small>
+                            <div class="star-rating product mt-2" title="">
+                                <div class="back-stars">
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                                    <div class="front-stars" style="width: {{$ratingPerAvg}}%">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </div>
+                                </div>
                             </div>
-                            <small class="pt-1">(99 Reviews)</small>
+                            <small class="pt-2 pl-2">({{$product->product_ratings_count}} Reviews)</small>
                         </div>
                         @if($product->compare_price > 0)
                             <h2 class="price text-secondary"><del>{{number_format($product->compare_price)}}₫</del></h2>
@@ -108,7 +142,110 @@
                                 </p>
                             </div>
                             <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <form action="" method="post" id="productRatingForm" name="productRatingForm">
+                                            <h3 class="h4 pb-3">Write a Review</h3>
+                                            <div class="form-group col-md-6 mb-3">
+                                                <label for="name">Name</label>
+                                                <input type="text" class="form-control" name="username" id="username" placeholder="Name">
+                                                <p></p>
+                                            </div>
+                                            <div class="form-group col-md-6 mb-3">
+                                                <label for="email">Email</label>
+                                                <input type="text" class="form-control" name="email" id="email" placeholder="Email">
+                                                <p></p>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="rating">Rating</label>
+                                                <br>
+                                                <div class="rating" style="width: 10rem">
+                                                    <input id="rating-5" type="radio" name="rating" value="5"/><label for="rating-5"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-4" type="radio" name="rating" value="4"  /><label for="rating-4"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-3" type="radio" name="rating" value="3"/><label for="rating-3"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-2" type="radio" name="rating" value="2"/><label for="rating-2"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-1" type="radio" name="rating" value="1"/><label for="rating-1"><i class="fas fa-3x fa-star"></i></label>
+                                                </div>
+                                                <p></p>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="">How was your overall experience?</label>
+                                                <textarea name="comment"  id="comment" class="form-control" cols="30" rows="10" placeholder="How was your overall experience?"></textarea>
+                                                <p></p>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-dark">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <div class="overall-rating mb-3">
+                                        <div class="d-flex">
+                                            @php
+                                              $avgRating = 0;
+                                              if ($product->product_ratings_count > 0){
+                                                  $avgRating = $product->product_ratings_sum_rating / $product->product_ratings_count;
+                                              }
+                                                $formattedRating = number_format($avgRating, 1);
+                                                $ratingPerAvg = ($avgRating * 100) / 5;
+                                            @endphp
 
+                                            <h1 class="h3 pe-3">{{$formattedRating}}</h1>
+                                            <div class="star-rating mt-2" title="">
+                                                <div class="back-stars">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+
+                                                    <div class="front-stars" style="width: {{$ratingPerAvg}}%">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pt-2 ps-2">({{$product->product_ratings_count}} Reviews)</div>
+                                        </div>
+
+                                    </div>
+
+                                    @if($product->product_ratings->isNotEmpty())
+                                        @foreach($product->product_ratings as $item)
+                                            @php $ratingPer = ($item->rating * 100)/5; @endphp
+                                            <div class="rating-group mb-4">
+                                                <span> <strong>{{$item->username}} </strong></span>
+                                                <div class="star-rating mt-2" title="">
+                                                    <div class="back-stars">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+
+                                                        <div class="front-stars" style="width: {{$ratingPer}}%">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="my-3">
+                                                    <p>
+                                                        {{$item->comment}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -198,5 +335,88 @@
                 },
             });
         }
+
+        $("#productRatingForm").submit(function (e){
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('client.saveRating', $product->id) }}',
+                type: 'POST',
+                data: $(this).serializeArray(),
+                dataType: 'json',
+                success : function(response) {
+                    if (response.status == true){
+                        window.location.href = "{{ route('client.product', $product->name) }}"
+                    }
+                    else {
+                        var errors = response.errors;
+                        if (errors.username){
+                            $("#username").addClass('is-invalid')
+                                .siblings("p")
+                                .addClass('invalid-feedback')
+                                .html(errors.username);
+                        }
+                        else {
+                            $("#username").removeClass('is-invalid')
+                                .siblings("p")
+                                .removeClass('invalid-feedback')
+                                .html('');
+                        }
+
+                        if (errors.email){
+                            $("#email").addClass('is-invalid')
+                                .siblings("p")
+                                .addClass('invalid-feedback')
+                                .html(errors.email);
+                        }
+                        else {
+                            $("#email").removeClass('is-invalid')
+                                .siblings("p")
+                                .removeClass('invalid-feedback')
+                                .html('');
+                        }
+
+                        if (errors.rating){
+                            $(".rating").addClass('is-invalid')
+                                .siblings("p")
+                                .addClass('invalid-feedback')
+                                .html(errors.rating);
+                        }
+                        else {
+                            $(".rating").removeClass('is-invalid')
+                                .siblings("p")
+                                .removeClass('invalid-feedback')
+                                .html('');
+                        }
+
+                        if (errors.comment){
+                            $("#comment").addClass('is-invalid')
+                                .siblings("p")
+                                .addClass('invalid-feedback')
+                                .html(errors.comment);
+                        }
+                        else {
+                            $("#comment").removeClass('is-invalid')
+                                .siblings("p")
+                                .removeClass('invalid-feedback')
+                                .html('');
+                        }
+
+                        $("#username, #email, #comment").on("input", function() {
+                            $(this).removeClass('is-invalid')
+                                .siblings("p")
+                                .removeClass('invalid-feedback')
+                                .html('');
+                        });
+
+                        $(".rating").on("change", function() {
+                            $(this).removeClass('is-invalid')
+                                .siblings("p")
+                                .removeClass('invalid-feedback')
+                                .html('');
+                        });
+                    }
+                },
+            });
+        });
     </script>
 @endsection

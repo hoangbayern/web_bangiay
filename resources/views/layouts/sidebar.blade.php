@@ -64,7 +64,7 @@
                 </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('review.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-star"></i>
                             <p>Reviews</p>
                         </a>

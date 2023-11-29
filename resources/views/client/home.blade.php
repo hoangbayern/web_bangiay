@@ -15,7 +15,7 @@
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div class="p-3">
-                            <h1 class="display-4 text-white mb-3">Shoes Fashion</h1>
+                            <h1 class="display-4 text-white mb-3">Shoes Products</h1>
                             <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam</p>
                             <a class="btn btn-outline-light py-2 px-4 mt-3" href="{{route('client.shop')}}">Shop Now</a>
                         </div>
@@ -26,7 +26,7 @@
                     <picture>
                         <source media="(max-width: 799px)" srcset="{{ asset('client-assets/images/carousel-2-m.jpg') }}" />
                         <source media="(max-width: 799px)" srcset="{{ asset('client-assets/images/carousel-2.jpg') }}" />
-                        <img src="{{ asset('client-assets/images/banner5.avif') }}" alt="" />
+                        <img src="{{ asset('client-assets/images/banner3.png') }}" alt="" />
                     </picture>
 
                     <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
@@ -106,7 +106,7 @@
                         <div class="col-lg-3">
                             <div class="cat-card">
                                 <div class="left">
-                                    <img src="{{ asset('client-assets/images/cat-1.jpg') }}" alt="" class="img-fluid">
+                                    <img src="{{ asset('client-assets/images/cat-3.jpg') }}" alt="" class="img-fluid">
                                 </div>
                                 <div class="right">
                                     <div class="cat-data">
